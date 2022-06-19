@@ -1,0 +1,6 @@
+{
+  "library": "spring-boot",
+  "interfaceOnly": "true",
+  "dateLibrary": "java8",
+  "useTags": "true"
+}

@@ -1,0 +1,28 @@
+openapi: 3.0.1
+info:
+  title: Cocktail API
+  version: LATEST
+
+servers:
+  - url: http://localhost:8080/
+
+paths:
+  /ping:
+    get:
+      operationId: ping
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PingResponse'
+
+components:
+  schemas:
+    PingResponse:
+      type: object
+      properties:
+        response:
+          type: string
+          nullable: false
