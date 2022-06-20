@@ -1,4 +1,4 @@
-# aPIIntegrationNPD
+# Cocktails App
 
 This Kotlin based [Spring Boot](https://spring.io/projects/spring-boot) application has been generated using the [OpenAPI Generator](https://github.com/OpenAPITools/openapi-generator).
 
