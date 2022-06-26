@@ -100,5 +100,5 @@ kotlin-ide/
 hs_err_pid*
 
 .openapi-generator
-gradle
-generated
+!gradle
+!gradle/wrapper/gradle-wrapper.jar
