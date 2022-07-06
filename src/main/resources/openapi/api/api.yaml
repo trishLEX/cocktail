@@ -47,6 +47,26 @@ paths:
               schema:
                 $ref: '#/components/schemas/CocktailsLightResponse'
 
+  /cocktails/{id}:
+    get:
+      tags:
+        - cocktail
+      operationId: getCocktail
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CocktailDTO'
+
+
   /cocktail-names/{name}:
     get:
       tags:
@@ -108,7 +128,7 @@ components:
         ingredients:
           type: array
           items:
-            $ref: '#/components/CocktailIngredientDTO'
+            $ref: '#/components/schemas/CocktailIngredientDTO'
 
     CocktailIngredientDTO:
       type: object
@@ -124,3 +144,43 @@ components:
           type: integer
         unit:
           type: string
+
+    CocktailDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        image:
+          type: string
+          format: byte
+        ingredients:
+          type: array
+          items:
+            $ref: '#/components/schemas/CocktailIngredientDTO'
+        tools:
+          type: array
+          items:
+            $ref: '#/components/schemas/CocktailToolDTO'
+        instructions:
+          type: array
+          items:
+            type: string
+        description:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+
+    CocktailToolDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        preview:
+          type: string
+          format: byte

@@ -3,9 +3,7 @@ package ru.trishlex.cocktail
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
-import ru.trishlex.cocktail.model.CocktailIngredient
-import ru.trishlex.cocktail.model.CocktailLight
-import ru.trishlex.cocktail.model.CocktailName
+import ru.trishlex.cocktail.model.*
 
 @Repository
 class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
@@ -35,6 +33,34 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
                 "where c.id > :id and lower(c.name) like lower(:name)\n" +
                 "order by c.id\n" +
                 "limit :limit"
+
+        private const val GET_COCKTAIL = "" +
+                "select\n" +
+                "   c.id cid,\n" +
+                "   c.name cname,\n" +
+                "   c.image cimage,\n" +
+                "   c.instructions cinstructions,\n" +
+                "   c.description cdescription,\n" +
+                "   c.tags ctags,\n" +
+                "   c.tools ctools,\n" +
+                "   i.id iid,\n" +
+                "   i.name iname,\n" +
+                "   i.preview ipreview,\n" +
+                "   ci.amount ciamount,\n" +
+                "   ci.unit ciunit\n" +
+                "from cocktail c\n" +
+                "join cocktail_ingredients ci on c.id = ci.cocktail_id\n" +
+                "join ingredient i on ci.ingredient_id = i.id\n" +
+                "where c.id = :id"
+
+        private const val GET_TOOLS = "" +
+                "select\n" +
+                "   id,\n" +
+                "   name,\n" +
+                "   preview,\n" +
+                "   description\n" +
+                "from tool\n" +
+                "where id in (:ids)"
     }
 
     fun getCocktailNames(name: String): List<CocktailName> {
@@ -80,5 +106,58 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
             }
         }
         return ArrayList(cocktails.values)
+    }
+
+    fun getCocktail(id: Int): Cocktail {
+        val cocktails = HashMap<Int, Cocktail>()
+        namedJdbcTemplate.query(
+            GET_COCKTAIL,
+            MapSqlParameterSource("id", id)
+        ) {
+            rs ->
+            run {
+                val cocktailId = rs.getInt("cid")
+                val cocktailLight = cocktails.computeIfAbsent(
+                    cocktailId
+                ) { id ->
+                    Cocktail(
+                        id,
+                        rs.getString("cname"),
+                        rs.getBytes("cimage"),
+                        ArrayList(),
+                        ArrayList(),
+                        (rs.getArray("ctools").array as Array<Int>).toList(),
+                        (rs.getArray("cinstructions").array as Array<String>).toList(),
+                        rs.getString("cdescription"),
+                        (rs.getArray("ctags").array as Array<String>).toList(),
+                    )
+                }
+
+                val cocktailIngredient = CocktailIngredient(
+                    rs.getInt("iid"),
+                    rs.getString("iname"),
+                    rs.getBytes("ipreview"),
+                    rs.getInt("ciamount"),
+                    rs.getString("ciunit")
+                )
+
+                cocktailLight.ingredients.add(cocktailIngredient)
+            }
+        }
+
+        val cocktail = cocktails[id]!!
+        cocktail.tools.addAll(getTools(cocktail.toolIds))
+        return cocktail
+    }
+
+    fun getTools(ids: List<Int>): List<CocktailTool> {
+        return namedJdbcTemplate.query(
+            GET_TOOLS,
+            MapSqlParameterSource("ids", ids)
+        ) {rs, _ -> CocktailTool(
+            rs.getInt("id"),
+            rs.getString("name"),
+            rs.getBytes("preview")
+        )}
     }
 }

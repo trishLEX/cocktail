@@ -1,20 +1,18 @@
-package ru.trishlex.cocktail
+package ru.trishlex.cocktail.model
 
-data class Cocktail(
+import org.openapitools.model.CocktailToolDTO
+
+data class CocktailTool(
     val id: Int,
     val name: String,
-    val image: ByteArray,
-    val preview: ByteArray,
-    val instructions: List<String>,
-    val description: String?,
-    val tags: List<String>
+    val preview: ByteArray
 ) {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as Cocktail
+        other as CocktailTool
 
         if (id != other.id) return false
 
@@ -23,5 +21,9 @@ data class Cocktail(
 
     override fun hashCode(): Int {
         return id
+    }
+
+    fun toDto(): CocktailToolDTO {
+        return CocktailToolDTO(id, name, preview)
     }
 }

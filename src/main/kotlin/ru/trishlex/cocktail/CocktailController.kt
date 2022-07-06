@@ -1,6 +1,7 @@
 package ru.trishlex.cocktail
 
 import org.openapitools.api.CocktailApi
+import org.openapitools.model.CocktailDTO
 import org.openapitools.model.CocktailLightDTO
 import org.openapitools.model.CocktailNameDTO
 import org.springframework.http.ResponseEntity
@@ -15,5 +16,9 @@ class CocktailController(private val cocktailService: CocktailService) : Cocktai
 
     override fun getCocktails(name: String, start: Int?, limit: Int?): ResponseEntity<List<CocktailLightDTO>> {
         return ResponseEntity.ok(cocktailService.getLightCocktails(name, start, limit).map { it.toDto() })
+    }
+
+    override fun getCocktail(id: Int): ResponseEntity<CocktailDTO> {
+        return ResponseEntity.ok(cocktailService.getCocktail(id).toDto())
     }
 }
