@@ -54,7 +54,7 @@ interface CocktailApi {
     )
     @RequestMapping(
             method = [RequestMethod.GET],
-            value = ["/cocktail-names/{name}"],
+            value = ["/cocktails/names/{name}"],
             produces = ["application/json"]
     )
     fun getCocktailNames(@Parameter(description = "", required = true) @PathVariable("name") name: kotlin.String): ResponseEntity<List<CocktailNameDTO>> {

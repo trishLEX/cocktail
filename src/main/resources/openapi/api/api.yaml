@@ -67,7 +67,7 @@ paths:
                 $ref: '#/components/schemas/CocktailDTO'
 
 
-  /cocktail-names/{name}:
+  /cocktails/names/{name}:
     get:
       tags:
         - cocktail
@@ -85,6 +85,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CocktailNamesResponse'
+
+  /ingredients/names/{name}:
+    get:
+      tags:
+        - ingredient
+      operationId: getIngredientNames
+      parameters:
+        - in: path
+          name: name
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IngredientNamesResponse'
+
 
 components:
   schemas:
@@ -104,6 +124,22 @@ components:
 
     CocktailNameDTO:
       type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+
+    IngredientNamesResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/IngredientNameDTO'
+
+    IngredientNameDTO:
+      type: object
+      required:
+        - id
+        - name
       properties:
         id:
           type: integer
