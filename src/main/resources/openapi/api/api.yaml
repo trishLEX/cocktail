@@ -18,17 +18,27 @@ paths:
               schema:
                 $ref: '#/components/schemas/PingResponse'
 
-  /cocktails/{name}:
+  /cocktails:
     get:
       tags:
         - cocktail
-      operationId: getCocktailsByName
+      operationId: getCocktails
       parameters:
-        - in: path
+        - in: query
+          name: start
+          required: false
+          schema:
+            type: integer
+        - in: query
           name: name
+          required: true
           schema:
             type: string
-          required: true
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
       responses:
         200:
           description: OK
@@ -70,14 +80,22 @@ components:
     CocktailNamesResponse:
       type: array
       items:
-        type: string
+        $ref: '#/components/schemas/CocktailNameDTO'
+
+    CocktailNameDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
 
     CocktailsLightResponse:
       type: array
       items:
-        $ref: '#/components/CocktailLight'
+        $ref: '#/components/schemas/CocktailLightDTO'
 
-    CocktailLight:
+    CocktailLightDTO:
       type: object
       properties:
         id:
@@ -90,9 +108,9 @@ components:
         ingredients:
           type: array
           items:
-            $ref: '#/components/CocktailIngredient'
+            $ref: '#/components/CocktailIngredientDTO'
 
-    CocktailIngredient:
+    CocktailIngredientDTO:
       type: object
       properties:
         id:
