@@ -9,8 +9,8 @@ import io.swagger.v3.oas.annotations.media.Schema
  */
 data class PingResponse(
 
-    @Schema(example = "null", description = "")
-    @field:JsonProperty("response") val response: kotlin.String? = null
+    @Schema(example = "null", required = true, description = "")
+    @field:JsonProperty("response", required = true) val response: kotlin.String
 ) {
 
 }

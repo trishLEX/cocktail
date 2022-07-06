@@ -1,6 +1,6 @@
 spring:
   application:
-    name: aPIIntegrationNPD
+    name: CocktailApp-Backend
 
   jackson:
     serialization:
@@ -8,3 +8,8 @@ spring:
 
 server:
   port: 8080
+
+db.url: jdbc:postgresql://rc1a-kgq9674tw9rnfx96.mdb.yandexcloud.net:6432/cocktail-db?ssl=true&sslmode=verify-full
+db.username: trishlex
+
+db.driver: org.postgresql.Driver

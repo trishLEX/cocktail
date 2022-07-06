@@ -43,10 +43,11 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-dependencies:2.4.5")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter")
-    implementation("org.springframework.data:spring-data-jdbc")
+    implementation("org.springframework.boot:spring-boot-starter-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-jetty")
     implementation("org.springframework.boot:spring-boot-configuration-processor")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-configuration-processor")
 
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
@@ -64,6 +65,9 @@ dependencies {
     implementation("javax.annotation:javax.annotation-api:1.3.2")
 
     implementation("org.openapitools:jackson-databind-nullable:0.2.1")
+
+    implementation("com.zaxxer:HikariCP:5.0.1")
+    implementation("org.postgresql:postgresql:42.4.0")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }

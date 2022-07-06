@@ -18,11 +18,91 @@ paths:
               schema:
                 $ref: '#/components/schemas/PingResponse'
 
+  /cocktails/{name}:
+    get:
+      tags:
+        - cocktail
+      operationId: getCocktailsByName
+      parameters:
+        - in: path
+          name: name
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CocktailsLightResponse'
+
+  /cocktail-names/{name}:
+    get:
+      tags:
+        - cocktail
+      operationId: getCocktailNames
+      parameters:
+        - in: path
+          name: name
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CocktailNamesResponse'
+
 components:
   schemas:
     PingResponse:
       type: object
+      required:
+        - response
       properties:
         response:
           type: string
           nullable: false
+
+    CocktailNamesResponse:
+      type: array
+      items:
+        type: string
+
+    CocktailsLightResponse:
+      type: array
+      items:
+        $ref: '#/components/CocktailLight'
+
+    CocktailLight:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        preview:
+          type: string
+          format: byte
+        ingredients:
+          type: array
+          items:
+            $ref: '#/components/CocktailIngredient'
+
+    CocktailIngredient:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        preview:
+          type: string
+          format: byte
+        amount:
+          type: integer
+        unit:
+          type: string
