@@ -134,6 +134,24 @@ paths:
               schema:
                 $ref: '#/components/schemas/IngredientNamesResponse'
 
+  /ingredients/{id}:
+    get:
+      tags:
+        - ingredient
+      operationId: getIngredient
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IngredientDTO'
 
 components:
   schemas:
@@ -249,3 +267,20 @@ components:
         preview:
           type: string
           format: byte
+
+    IngredientDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        image:
+          type: string
+          format: byte
+        description:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string

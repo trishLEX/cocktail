@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
+import org.openapitools.model.IngredientDTO
 import org.openapitools.model.IngredientNameDTO
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -21,6 +22,23 @@ import org.springframework.web.bind.annotation.RequestMethod
 @Validated
 @RequestMapping("\${api.base-path:}")
 interface IngredientApi {
+
+    @Operation(
+        summary = "",
+        operationId = "getIngredient",
+        description = "",
+        responses = [
+            ApiResponse(responseCode = "200", description = "OK", content = [Content(schema = Schema(implementation = IngredientDTO::class))])
+        ]
+    )
+    @RequestMapping(
+            method = [RequestMethod.GET],
+            value = ["/ingredients/{id}"],
+            produces = ["application/json"]
+    )
+    fun getIngredient(@Parameter(description = "", required = true) @PathVariable("id") id: kotlin.Int): ResponseEntity<IngredientDTO> {
+        return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
+    }
 
     @Operation(
         summary = "",

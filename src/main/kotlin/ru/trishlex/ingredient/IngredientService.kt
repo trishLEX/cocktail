@@ -1,6 +1,7 @@
 package ru.trishlex.ingredient
 
 import org.springframework.stereotype.Service
+import ru.trishlex.ingredient.model.Ingredient
 import ru.trishlex.ingredient.model.IngredientName
 
 @Service
@@ -13,5 +14,9 @@ class IngredientService(private val ingredientDao: IngredientDao) {
 
     fun getIngredientNames(name: String): List<IngredientName> {
         return ingredientDao.getIngredientNames(name)
+    }
+
+    fun getIngredient(id: Int): Ingredient {
+        return ingredientDao.getIngredient(id)
     }
 }
