@@ -77,4 +77,21 @@ interface CocktailApi {
     fun getCocktails(@NotNull @Parameter(description = "", required = true) @Valid @RequestParam(value = "name", required = true) name: kotlin.String,@Parameter(description = "") @Valid @RequestParam(value = "start", required = false) start: kotlin.Int?,@Parameter(description = "") @Valid @RequestParam(value = "limit", required = false) limit: kotlin.Int?): ResponseEntity<List<CocktailLightDTO>> {
         return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
+
+    @Operation(
+        summary = "",
+        operationId = "getCocktailsByIngredient",
+        description = "",
+        responses = [
+            ApiResponse(responseCode = "200", description = "OK", content = [Content(schema = Schema(implementation = CocktailLightDTO::class))])
+        ]
+    )
+    @RequestMapping(
+            method = [RequestMethod.GET],
+            value = ["/cocktails/ingredients/{id}"],
+            produces = ["application/json"]
+    )
+    fun getCocktailsByIngredient(@Parameter(description = "", required = true) @PathVariable("id") id: kotlin.Int,@Parameter(description = "") @Valid @RequestParam(value = "start", required = false) start: kotlin.Int?,@Parameter(description = "") @Valid @RequestParam(value = "limit", required = false) limit: kotlin.Int?): ResponseEntity<List<CocktailLightDTO>> {
+        return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
+    }
 }

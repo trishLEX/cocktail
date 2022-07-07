@@ -21,4 +21,8 @@ class CocktailController(private val cocktailService: CocktailService) : Cocktai
     override fun getCocktail(id: Int): ResponseEntity<CocktailDTO> {
         return ResponseEntity.ok(cocktailService.getCocktail(id).toDto())
     }
+
+    override fun getCocktailsByIngredient(id: Int, start: Int?, limit: Int?): ResponseEntity<List<CocktailLightDTO>> {
+        return ResponseEntity.ok(cocktailService.getLightCocktails(id, start, limit).map { it.toDto() })
+    }
 }

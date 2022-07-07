@@ -34,6 +34,23 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
                 "order by c.id\n" +
                 "limit :limit"
 
+        private const val GET_LIGHT_COCKTAILS_BY_INGREDIENT_ID = "" +
+                "select\n" +
+                "   c.id cid,\n" +
+                "   c.name cname,\n" +
+                "   c.preview cpreview,\n" +
+                "   i.id iid,\n" +
+                "   i.name iname,\n" +
+                "   i.preview ipreview,\n" +
+                "   ci.amount ciamount,\n" +
+                "   ci.unit ciunit\n" +
+                "from cocktail c\n" +
+                "join cocktail_ingredients ci on c.id = ci.cocktail_id\n" +
+                "join ingredient i on ci.ingredient_id = i.id\n" +
+                "where c.id > :id and :ingredientId = any(c.ingredients)\n" + //TODO indices?
+                "order by c.id\n" +
+                "limit :limit"
+
         private const val GET_COCKTAIL = "" +
                 "select\n" +
                 "   c.id cid,\n" +
@@ -159,5 +176,41 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
             rs.getString("name"),
             rs.getBytes("preview")
         )}
+    }
+
+    fun getCocktailsByIngredient(ingredientId: Int, start: Int, limit: Int): List<CocktailLight> {
+        val cocktails = HashMap<Int, CocktailLight>()
+        namedJdbcTemplate.query(
+            GET_LIGHT_COCKTAILS,
+            MapSqlParameterSource()
+                .addValue("ingredientId", ingredientId)
+                .addValue("id", start)
+                .addValue("limit", limit)
+        ) { rs ->
+            run {
+                val cocktailId = rs.getInt("cid")
+                val cocktailLight = cocktails.computeIfAbsent(
+                    cocktailId
+                ) { id ->
+                    CocktailLight(
+                        id,
+                        rs.getString("cname"),
+                        rs.getBytes("cpreview"),
+                        ArrayList()
+                    )
+                }
+
+                val cocktailIngredient = CocktailIngredient(
+                    rs.getInt("iid"),
+                    rs.getString("iname"),
+                    rs.getBytes("ipreview"),
+                    rs.getInt("ciamount"),
+                    rs.getString("ciunit")
+                )
+
+                cocktailLight.ingredients.add(cocktailIngredient)
+            }
+        }
+        return ArrayList(cocktails.values)
     }
 }

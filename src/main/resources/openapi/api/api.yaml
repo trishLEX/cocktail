@@ -47,6 +47,35 @@ paths:
               schema:
                 $ref: '#/components/schemas/CocktailsLightResponse'
 
+  /cocktails/ingredients/{id}:
+    get:
+      tags:
+        - cocktail
+      operationId: getCocktailsByIngredient
+      parameters:
+        - in: query
+          name: start
+          required: false
+          schema:
+            type: integer
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CocktailsLightResponse'
+
   /cocktails/{id}:
     get:
       tags:
