@@ -10,7 +10,7 @@ data class Cocktail(
     val tools: ArrayList<CocktailTool> = ArrayList(),
     val toolIds: List<Int> = ArrayList(),
     val instructions: List<String> = ArrayList(),
-    val description: String,
+    val description: String?,
     val tags: List<String> = ArrayList()
 ) {
     override fun equals(other: Any?): Boolean {

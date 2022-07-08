@@ -19,20 +19,23 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
 
         private const val GET_LIGHT_COCKTAILS = "" +
                 "select\n" +
-                "   c.id cid,\n" +
-                "   c.name cname,\n" +
-                "   c.preview cpreview,\n" +
-                "   i.id iid,\n" +
-                "   i.name iname,\n" +
-                "   i.preview ipreview,\n" +
-                "   ci.amount ciamount,\n" +
-                "   ci.unit ciunit\n" +
+                "    c.id cid,\n" +
+                "    c.name cname,\n" +
+                "    c.preview cpreview,\n" +
+                "    i.id iid,\n" +
+                "    i.name iname,\n" +
+                "    i.preview ipreview,\n" +
+                "    ci.amount ciamount,\n" +
+                "    ci.unit ciunit,\n" +
+                "    row_number() over (partition by c.id order by c.id) as rownum\n" +
                 "from cocktail c\n" +
-                "join cocktail_ingredients ci on c.id = ci.cocktail_id\n" +
-                "join ingredient i on ci.ingredient_id = i.id\n" +
-                "where c.id > :id and lower(c.name) like lower(:name)\n" +
-                "order by c.id\n" +
-                "limit :limit"
+                "         join cocktail_ingredients ci on c.id = ci.cocktail_id\n" +
+                "         join ingredient i on ci.ingredient_id = i.id\n" +
+                "where c.id in (\n" +
+                "    select id from cocktail\n" +
+                "    where id > :id and lower(name) like lower(:name)\n" +
+                "    limit :limit\n" +
+                ")"
 
         private const val GET_LIGHT_COCKTAILS_BY_INGREDIENT_ID = "" +
                 "select\n" +
