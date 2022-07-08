@@ -134,6 +134,35 @@ paths:
               schema:
                 $ref: '#/components/schemas/IngredientNamesResponse'
 
+  /ingredients:
+    get:
+      tags:
+        - ingredient
+      operationId: getIngredients
+      parameters:
+        - in: query
+          name: start
+          required: false
+          schema:
+            type: integer
+        - in: query
+          name: name
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IngredientsLightResponse'
+
   /ingredients/{id}:
     get:
       tags:
@@ -284,3 +313,19 @@ components:
           type: array
           items:
             type: string
+
+    IngredientsLightResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/IngredientLightDTO'
+
+    IngredientLightDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        preview:
+          type: string
+          format: byte
+        name:
+          type: string

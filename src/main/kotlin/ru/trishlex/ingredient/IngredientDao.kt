@@ -4,6 +4,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
 import ru.trishlex.ingredient.model.Ingredient
+import ru.trishlex.ingredient.model.IngredientLight
 import ru.trishlex.ingredient.model.IngredientName
 
 @Repository
@@ -18,14 +19,24 @@ class IngredientDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
                 "order by id\n" +
                 "limit :limit\n"
 
+        private const val GET_INGREDIENTS = "" +
+                "select\n" +
+                "   id,\n" +
+                "   name,\n" +
+                "   preview\n" +
+                "from ingredient\n" +
+                "where id > :id and lower(name) like lower(:name)\n" +
+                "order by id\n" +
+                "limit :limit"
+
         private const val GET_INGREDIENT = "" +
                 "select\n" +
                 "   id,\n" +
                 "   name,\n" +
                 "   image,\n" +
                 "   description,\n" +
-                "   tags" +
-                "from ingredient" +
+                "   tags\n" +
+                "from ingredient\n" +
                 "where id = :id"
     }
 
@@ -36,6 +47,20 @@ class IngredientDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
                 .addValue("name", "$name%")
                 .addValue("limit", LIMIT)
         ) { rs, _ -> IngredientName(rs.getInt("id"), rs.getString("name")) }
+    }
+
+    fun getIngredients(name: String, start: Int, limit: Int): List<IngredientLight> {
+        return namedJdbcTemplate.query(
+            GET_INGREDIENTS,
+            MapSqlParameterSource()
+                .addValue("id", start)
+                .addValue("name", "$name%")
+                .addValue("limit", limit)
+        ) { rs, _ -> IngredientLight(
+            rs.getInt("id"),
+            rs.getString("name"),
+            rs.getBytes("preview")
+        )}
     }
 
     fun getIngredient(id: Int): Ingredient {

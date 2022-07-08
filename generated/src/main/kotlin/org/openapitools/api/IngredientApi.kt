@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import org.openapitools.model.IngredientDTO
+import org.openapitools.model.IngredientLightDTO
 import org.openapitools.model.IngredientNameDTO
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -18,6 +19,9 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
+import org.springframework.web.bind.annotation.RequestParam
+import javax.validation.Valid
+import javax.validation.constraints.NotNull
 
 @Validated
 @RequestMapping("\${api.base-path:}")
@@ -54,6 +58,23 @@ interface IngredientApi {
             produces = ["application/json"]
     )
     fun getIngredientNames(@Parameter(description = "", required = true) @PathVariable("name") name: kotlin.String): ResponseEntity<List<IngredientNameDTO>> {
+        return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
+    }
+
+    @Operation(
+        summary = "",
+        operationId = "getIngredients",
+        description = "",
+        responses = [
+            ApiResponse(responseCode = "200", description = "OK", content = [Content(schema = Schema(implementation = IngredientLightDTO::class))])
+        ]
+    )
+    @RequestMapping(
+            method = [RequestMethod.GET],
+            value = ["/ingredients"],
+            produces = ["application/json"]
+    )
+    fun getIngredients(@NotNull @Parameter(description = "", required = true) @Valid @RequestParam(value = "name", required = true) name: kotlin.String,@Parameter(description = "") @Valid @RequestParam(value = "start", required = false) start: kotlin.Int?,@Parameter(description = "") @Valid @RequestParam(value = "limit", required = false) limit: kotlin.Int?): ResponseEntity<List<IngredientLightDTO>> {
         return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 }
