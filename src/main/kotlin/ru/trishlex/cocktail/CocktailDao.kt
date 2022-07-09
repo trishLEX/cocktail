@@ -4,6 +4,8 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
 import ru.trishlex.cocktail.model.*
+import ru.trishlex.util.ArraySql
+import java.sql.JDBCType
 
 @Repository
 class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
@@ -26,14 +28,14 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
                 "    i.name iname,\n" +
                 "    i.preview ipreview,\n" +
                 "    ci.amount ciamount,\n" +
-                "    ci.unit ciunit,\n" +
-                "    row_number() over (partition by c.id order by c.id) as rownum\n" +
+                "    ci.unit ciunit\n" +
                 "from cocktail c\n" +
-                "         join cocktail_ingredients ci on c.id = ci.cocktail_id\n" +
-                "         join ingredient i on ci.ingredient_id = i.id\n" +
+                "join cocktail_ingredients ci on c.id = ci.cocktail_id\n" +
+                "join ingredient i on ci.ingredient_id = i.id\n" +
                 "where c.id in (\n" +
                 "    select id from cocktail\n" +
                 "    where id > :id and lower(name) like lower(:name)\n" +
+                "    order by id\n" +
                 "    limit :limit\n" +
                 ")"
 
@@ -50,9 +52,32 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
                 "from cocktail c\n" +
                 "join cocktail_ingredients ci on c.id = ci.cocktail_id\n" +
                 "join ingredient i on ci.ingredient_id = i.id\n" +
-                "where c.id > :id and :ingredientId = any(c.ingredients)\n" + //TODO indices?
-                "order by c.id\n" +
-                "limit :limit"
+                "where c.id in (\n" +
+                "   select id from cocktail\n" +
+                "   where id > :id and :ingredientId = any(ingredients)" +
+                "    order by id\n" +
+                "    limit :limit\n" +
+                ")"
+
+        private const val GET_LIGHT_COCKTAILS_BY_INGREDIENT_IDS = "" +
+                "select\n" +
+                "   c.id cid,\n" +
+                "   c.name cname,\n" +
+                "   c.preview cpreview,\n" +
+                "   i.id iid,\n" +
+                "   i.name iname,\n" +
+                "   i.preview ipreview,\n" +
+                "   ci.amount ciamount,\n" +
+                "   ci.unit ciunit\n" +
+                "from cocktail c\n" +
+                "join cocktail_ingredients ci on c.id = ci.cocktail_id\n" +
+                "join ingredient i on ci.ingredient_id = i.id\n" +
+                "where c.id in (\n" +
+                "   select id from cocktail\n" +
+                "   where id > :id and ingredients @> :ingredientIds" +
+                "    order by id\n" +
+                "    limit :limit\n" +
+                ")"
 
         private const val GET_COCKTAIL = "" +
                 "select\n" +
@@ -87,7 +112,7 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
         return namedJdbcTemplate.query(
             GET_COCKTAIL_NAMES,
             MapSqlParameterSource()
-                .addValue("name", "$name%")
+                .addValue("name", "%$name%")
                 .addValue("limit", LIMIT)
         ) { rs, _ -> CocktailName(rs.getInt("id"), rs.getString("name")) }
     }
@@ -97,7 +122,7 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
         namedJdbcTemplate.query(
             GET_LIGHT_COCKTAILS,
             MapSqlParameterSource()
-                .addValue("name", "$name%")
+                .addValue("name", "%$name%")
                 .addValue("id", start)
                 .addValue("limit", limit)
         ) { rs ->
@@ -184,9 +209,45 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
     fun getCocktailsByIngredient(ingredientId: Int, start: Int, limit: Int): List<CocktailLight> {
         val cocktails = HashMap<Int, CocktailLight>()
         namedJdbcTemplate.query(
-            GET_LIGHT_COCKTAILS,
+            GET_LIGHT_COCKTAILS_BY_INGREDIENT_ID,
             MapSqlParameterSource()
                 .addValue("ingredientId", ingredientId)
+                .addValue("id", start)
+                .addValue("limit", limit)
+        ) { rs ->
+            run {
+                val cocktailId = rs.getInt("cid")
+                val cocktailLight = cocktails.computeIfAbsent(
+                    cocktailId
+                ) { id ->
+                    CocktailLight(
+                        id,
+                        rs.getString("cname"),
+                        rs.getBytes("cpreview"),
+                        ArrayList()
+                    )
+                }
+
+                val cocktailIngredient = CocktailIngredient(
+                    rs.getInt("iid"),
+                    rs.getString("iname"),
+                    rs.getBytes("ipreview"),
+                    rs.getInt("ciamount"),
+                    rs.getString("ciunit")
+                )
+
+                cocktailLight.ingredients.add(cocktailIngredient)
+            }
+        }
+        return ArrayList(cocktails.values)
+    }
+
+    fun getCocktailsByIngredientIds(ingredientIds: List<Int>, start: Int, limit: Int): List<CocktailLight> {
+        val cocktails = HashMap<Int, CocktailLight>()
+        namedJdbcTemplate.query(
+            GET_LIGHT_COCKTAILS_BY_INGREDIENT_IDS,
+            MapSqlParameterSource()
+                .addValue("ingredientIds", ArraySql.create(ingredientIds, JDBCType.INTEGER))
                 .addValue("id", start)
                 .addValue("limit", limit)
         ) { rs ->

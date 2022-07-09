@@ -25,4 +25,12 @@ class CocktailController(private val cocktailService: CocktailService) : Cocktai
     override fun getCocktailsByIngredient(id: Int, start: Int?, limit: Int?): ResponseEntity<List<CocktailLightDTO>> {
         return ResponseEntity.ok(cocktailService.getLightCocktails(id, start, limit).map { it.toDto() })
     }
+
+    override fun getCocktailsByIngredients(
+        ingredientIds: List<Int>,
+        start: Int?,
+        limit: Int?
+    ): ResponseEntity<List<CocktailLightDTO>> {
+        return ResponseEntity.ok(cocktailService.getLightCocktails(ingredientIds, start, limit).map { it.toDto() })
+    }
 }

@@ -44,7 +44,7 @@ class IngredientDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
         return namedJdbcTemplate.query(
             GET_INGREDIENT_NAMES,
             MapSqlParameterSource()
-                .addValue("name", "$name%")
+                .addValue("name", "%$name%")
                 .addValue("limit", LIMIT)
         ) { rs, _ -> IngredientName(rs.getInt("id"), rs.getString("name")) }
     }
@@ -54,7 +54,7 @@ class IngredientDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
             GET_INGREDIENTS,
             MapSqlParameterSource()
                 .addValue("id", start)
-                .addValue("name", "$name%")
+                .addValue("name", "%$name%")
                 .addValue("limit", limit)
         ) { rs, _ -> IngredientLight(
             rs.getInt("id"),
