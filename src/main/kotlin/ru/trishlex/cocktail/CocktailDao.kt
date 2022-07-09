@@ -74,7 +74,7 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
                 "join ingredient i on ci.ingredient_id = i.id\n" +
                 "where c.id in (\n" +
                 "   select id from cocktail\n" +
-                "   where id > :id and ingredients @> :ingredientIds" +
+                "   where id > :id and ingredients <@ :ingredientIds" +
                 "    order by id\n" +
                 "    limit :limit\n" +
                 ")"
@@ -242,7 +242,7 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
         return ArrayList(cocktails.values)
     }
 
-    fun getCocktailsByIngredientIds(ingredientIds: List<Int>, start: Int, limit: Int): List<CocktailLight> {
+    fun getCocktailsByIngredientIds(ingredientIds: Collection<Int>, start: Int, limit: Int): List<CocktailLight> {
         val cocktails = HashMap<Int, CocktailLight>()
         namedJdbcTemplate.query(
             GET_LIGHT_COCKTAILS_BY_INGREDIENT_IDS,

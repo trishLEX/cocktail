@@ -31,6 +31,6 @@ class CocktailController(private val cocktailService: CocktailService) : Cocktai
         start: Int?,
         limit: Int?
     ): ResponseEntity<List<CocktailLightDTO>> {
-        return ResponseEntity.ok(cocktailService.getLightCocktails(ingredientIds, start, limit).map { it.toDto() })
+        return ResponseEntity.ok(cocktailService.getLightCocktails(ingredientIds.toHashSet(), start, limit).map { it.toDto() })
     }
 }
