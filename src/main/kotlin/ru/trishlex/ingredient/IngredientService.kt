@@ -24,4 +24,8 @@ class IngredientService(private val ingredientDao: IngredientDao) {
     fun getIngredients(name: String, start: Int?, limit: Int?): List<IngredientLight> {
         return ingredientDao.getIngredients(name, start ?: START, limit ?: LIMIT)
     }
+
+    fun getIngredients(ids: List<Int>): List<IngredientLight> {
+        return ingredientDao.getIngredients(ids)
+    }
 }

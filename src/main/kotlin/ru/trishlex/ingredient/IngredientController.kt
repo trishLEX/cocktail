@@ -21,4 +21,8 @@ class IngredientController(private val ingredientService: IngredientService): In
     override fun getIngredients(name: String, start: Int?, limit: Int?): ResponseEntity<List<IngredientLightDTO>> {
         return ResponseEntity.ok(ingredientService.getIngredients(name, start, limit).map { it.toDto() })
     }
+
+    override fun getIngredientsByIds(ids: List<Int>): ResponseEntity<List<IngredientLightDTO>> {
+        return ResponseEntity.ok(ingredientService.getIngredients(ids).map { it.toDto() })
+    }
 }

@@ -77,4 +77,21 @@ interface IngredientApi {
     fun getIngredients(@NotNull @Parameter(description = "", required = true) @Valid @RequestParam(value = "name", required = true) name: kotlin.String,@Parameter(description = "") @Valid @RequestParam(value = "start", required = false) start: kotlin.Int?,@Parameter(description = "") @Valid @RequestParam(value = "limit", required = false) limit: kotlin.Int?): ResponseEntity<List<IngredientLightDTO>> {
         return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
+
+    @Operation(
+        summary = "",
+        operationId = "getIngredientsByIds",
+        description = "",
+        responses = [
+            ApiResponse(responseCode = "200", description = "OK", content = [Content(schema = Schema(implementation = IngredientLightDTO::class))])
+        ]
+    )
+    @RequestMapping(
+            method = [RequestMethod.GET],
+            value = ["/ingredients-by-id"],
+            produces = ["application/json"]
+    )
+    fun getIngredientsByIds(@NotNull @Parameter(description = "", required = true) @Valid @RequestParam(value = "ids", required = true) ids: kotlin.collections.List<kotlin.Int>): ResponseEntity<List<IngredientLightDTO>> {
+        return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
+    }
 }
