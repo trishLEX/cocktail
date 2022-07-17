@@ -109,20 +109,23 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
 
         private const val GET_LIGHT_COCKTAILS_BY_IDS = "" +
                 "select\n" +
-                "   c.id cid,\n" +
-                "   c.name cname,\n" +
-                "   c.preview cpreview,\n" +
-                "   i.id iid,\n" +
-                "   i.name iname,\n" +
-                "   i.preview ipreview,\n" +
-                "   ci.amount ciamount,\n" +
-                "   ci.unit ciunit\n" +
+                "    c.id cid,\n" +
+                "    c.name cname,\n" +
+                "    c.preview cpreview,\n" +
+                "    i.id iid,\n" +
+                "    i.name iname,\n" +
+                "    i.preview ipreview,\n" +
+                "    ci.amount ciamount,\n" +
+                "    ci.unit ciunit\n" +
                 "from cocktail c\n" +
                 "join cocktail_ingredients ci on c.id = ci.cocktail_id\n" +
                 "join ingredient i on ci.ingredient_id = i.id\n" +
-                "where c.id > :start and c.id in (:ids)\n" +
-                "order by c.id\n" +
-                "limit :limit"
+                "where c.id in (\n" +
+                "    select id from cocktail\n" +
+                "    where id > :id and id in (:ids)\n" +
+                "    order by id\n" +
+                "    limit :limit\n" +
+                ")"
     }
 
     fun getCocktailNames(name: String): List<CocktailName> {
@@ -301,7 +304,7 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
             GET_LIGHT_COCKTAILS_BY_IDS,
             MapSqlParameterSource()
                 .addValue("ids", ids)
-                .addValue("start", start)
+                .addValue("id", start)
                 .addValue("limit", limit)
         ) { rs ->
             run {
