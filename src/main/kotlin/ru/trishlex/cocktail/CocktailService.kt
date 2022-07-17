@@ -29,6 +29,10 @@ class CocktailService(private val cocktailDao: CocktailDao) {
         return cocktailDao.getCocktailsByIngredientIds(ingredientIds, start ?: START, limit ?: LIMIT).sortedBy { it.id }
     }
 
+    fun getLightCocktails(ids: List<Int>, start: Int?, limit: Int?): List<CocktailLight> {
+        return cocktailDao.getCocktailsByIds(ids, start ?: START, limit ?: LIMIT).sortedBy { it.id }
+    }
+
     fun getCocktail(id: Int): Cocktail {
         return cocktailDao.getCocktail(id)
     }
