@@ -264,6 +264,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/IngredientDTO'
 
+  /ingredients/types:
+    get:
+      tags:
+        - ingredient
+      operationId: getIngredientTypes
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IngredientTypesResponse'
+
 components:
   schemas:
     PingResponse:
@@ -411,3 +424,61 @@ components:
           format: byte
         name:
           type: string
+
+    IngredientTypesResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/SearchIngredientDTO'
+
+    SearchIngredientDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/IngredientTypeDTO'
+
+    IngredientTypeDTO:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+            - GIN
+            - VODKA
+            - TEQUILA
+            - RUM
+            - WHISKEY
+            - BOURBON
+            - ABSINTHE
+            - COGNAC
+            - PORT_WINE
+            - SHERRY
+            - APERITIF
+            - LIQUOR
+            - VERMOUTH
+            - BITTER
+            - WINE
+            - BEER
+            - SYRUP
+            - NON_ALCOHOLIC
+            - HONEY
+            - DESSERT
+            - ADDITIVE
+            - GREENS
+            - MISC
+            - JAM
+            - JUICE
+            - SPICE
+            - DRIED_FRUIT
+            - DECORATION
+            - FRUIT
+            - VEGETABLE
+            - TEA
+            - NUT
+            - BERRY
+            - ICE

@@ -1,12 +1,21 @@
 package ru.trishlex.ingredient
 
+import com.google.common.base.Suppliers
 import org.springframework.stereotype.Service
 import ru.trishlex.ingredient.model.Ingredient
 import ru.trishlex.ingredient.model.IngredientLight
 import ru.trishlex.ingredient.model.IngredientName
+import ru.trishlex.ingredient.model.SearchIngredient
+import java.util.concurrent.TimeUnit
 
 @Service
 class IngredientService(private val ingredientDao: IngredientDao) {
+
+    private val ingredientTypeCache = Suppliers.memoizeWithExpiration(
+        { ingredientDao.getSearchIngredients().sortedBy { it.ingredientType.ordinal } },
+        1,
+        TimeUnit.HOURS
+    )
 
     companion object {
         private const val START = 0
@@ -27,5 +36,9 @@ class IngredientService(private val ingredientDao: IngredientDao) {
 
     fun getIngredients(ids: List<Int>): List<IngredientLight> {
         return ingredientDao.getIngredients(ids)
+    }
+
+    fun getSearchIngredients(): List<SearchIngredient> {
+        return ingredientTypeCache.get()
     }
 }

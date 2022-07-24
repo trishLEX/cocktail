@@ -4,6 +4,7 @@ import org.openapitools.api.IngredientApi
 import org.openapitools.model.IngredientDTO
 import org.openapitools.model.IngredientLightDTO
 import org.openapitools.model.IngredientNameDTO
+import org.openapitools.model.SearchIngredientDTO
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
@@ -24,5 +25,9 @@ class IngredientController(private val ingredientService: IngredientService): In
 
     override fun getIngredientsByIds(ids: List<Int>): ResponseEntity<List<IngredientLightDTO>> {
         return ResponseEntity.ok(ingredientService.getIngredients(ids).map { it.toDto() })
+    }
+
+    override fun getIngredientTypes(): ResponseEntity<List<SearchIngredientDTO>> {
+        return ResponseEntity.ok(ingredientService.getSearchIngredients().map { it.toDto() })
     }
 }

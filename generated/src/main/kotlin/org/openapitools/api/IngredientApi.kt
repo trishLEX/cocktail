@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import org.openapitools.model.IngredientDTO
 import org.openapitools.model.IngredientLightDTO
 import org.openapitools.model.IngredientNameDTO
+import org.openapitools.model.SearchIngredientDTO
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
@@ -58,6 +59,23 @@ interface IngredientApi {
             produces = ["application/json"]
     )
     fun getIngredientNames(@Parameter(description = "", required = true) @PathVariable("name") name: kotlin.String): ResponseEntity<List<IngredientNameDTO>> {
+        return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
+    }
+
+    @Operation(
+        summary = "",
+        operationId = "getIngredientTypes",
+        description = "",
+        responses = [
+            ApiResponse(responseCode = "200", description = "OK", content = [Content(schema = Schema(implementation = SearchIngredientDTO::class))])
+        ]
+    )
+    @RequestMapping(
+            method = [RequestMethod.GET],
+            value = ["/ingredients/types"],
+            produces = ["application/json"]
+    )
+    fun getIngredientTypes(): ResponseEntity<List<SearchIngredientDTO>> {
         return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 
