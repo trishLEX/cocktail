@@ -3,7 +3,6 @@ package ru.trishlex.api
 import org.springframework.stereotype.Component
 import org.springframework.web.servlet.AsyncHandlerInterceptor
 import ru.trishlex.util.injectedLogger
-import java.time.LocalDateTime
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
@@ -13,7 +12,7 @@ class LogRequestInterceptor : AsyncHandlerInterceptor {
     private val log by injectedLogger()
 
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
-        log.info("Request: " + request.requestURL.toString() + " time: " + LocalDateTime.now())
+        log.info("Request: ${request.requestURL}\tparams: ${request.parameterMap}")
         return super.preHandle(request, response, handler)
     }
 }

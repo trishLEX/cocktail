@@ -38,7 +38,7 @@ interface CocktailApi {
     )
     @RequestMapping(
             method = [RequestMethod.GET],
-            value = ["/cocktails/ingredients/search"],
+            value = ["/v2/cocktails/ingredients/search"],
             produces = ["application/json"]
     )
     fun getAllCocktailsByIngredients(@NotNull @Parameter(description = "", required = true) @Valid @RequestParam(value = "ingredientIds", required = true) ingredientIds: kotlin.collections.List<kotlin.Int>,@Parameter(description = "") @Valid @RequestParam(value = "start", required = false) start: kotlin.Int?,@Parameter(description = "") @Valid @RequestParam(value = "limit", required = false) limit: kotlin.Int?): ResponseEntity<PagedCocktailLightResponse> {
@@ -144,6 +144,23 @@ interface CocktailApi {
             produces = ["application/json"]
     )
     fun getCocktailsByIngredients(@NotNull @Parameter(description = "", required = true) @Valid @RequestParam(value = "ingredientIds", required = true) ingredientIds: kotlin.collections.List<kotlin.Int>,@Parameter(description = "") @Valid @RequestParam(value = "start", required = false) start: kotlin.Int?,@Parameter(description = "") @Valid @RequestParam(value = "limit", required = false) limit: kotlin.Int?): ResponseEntity<List<CocktailLightDTO>> {
+        return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
+    }
+
+    @Operation(
+        summary = "",
+        operationId = "getCocktailsByName",
+        description = "",
+        responses = [
+            ApiResponse(responseCode = "200", description = "OK", content = [Content(schema = Schema(implementation = PagedCocktailLightResponse::class))])
+        ]
+    )
+    @RequestMapping(
+            method = [RequestMethod.GET],
+            value = ["/v2/cocktails"],
+            produces = ["application/json"]
+    )
+    fun getCocktailsByName(@NotNull @Parameter(description = "", required = true) @Valid @RequestParam(value = "name", required = true) name: kotlin.String,@Parameter(description = "") @Valid @RequestParam(value = "start", required = false) start: kotlin.Int?,@Parameter(description = "") @Valid @RequestParam(value = "limit", required = false) limit: kotlin.Int?): ResponseEntity<PagedCocktailLightResponse> {
         return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 }

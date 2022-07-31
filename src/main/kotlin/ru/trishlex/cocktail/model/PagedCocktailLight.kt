@@ -9,7 +9,6 @@ data class PagedCocktailLight(
     val missingIngredientsCount: Int,
     val ingredients: ArrayList<CocktailIngredient> = ArrayList()
 ) {
-
     fun toDto(): CocktailLightDTO {
         return CocktailLightDTO(id, name, preview, missingIngredientsCount, ingredients.map { it.toDto() })
     }

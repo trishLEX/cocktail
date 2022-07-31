@@ -16,7 +16,7 @@ class CocktailController(private val cocktailService: CocktailService) : Cocktai
     }
 
     override fun getCocktails(name: String, start: Int?, limit: Int?): ResponseEntity<List<CocktailLightDTO>> {
-        return ResponseEntity.ok(cocktailService.getLightCocktails(name, start, limit).map { it.toDto() })
+        return ResponseEntity.ok(cocktailService.getLightCocktails(name, start, limit).cocktails.map { it.toDto() })
     }
 
     override fun getCocktail(id: Int): ResponseEntity<CocktailDTO> {
@@ -47,5 +47,13 @@ class CocktailController(private val cocktailService: CocktailService) : Cocktai
 
     override fun getCocktailsByIds(ids: List<Int>, start: Int?, limit: Int?): ResponseEntity<List<CocktailLightDTO>> {
         return ResponseEntity.ok(cocktailService.getLightCocktails(ids, start, limit).map { it.toDto() })
+    }
+
+    override fun getCocktailsByName(
+        name: String,
+        start: Int?,
+        limit: Int?
+    ): ResponseEntity<PagedCocktailLightResponse> {
+        return ResponseEntity.ok(cocktailService.getLightCocktails(name, start, limit).toDto())
     }
 }

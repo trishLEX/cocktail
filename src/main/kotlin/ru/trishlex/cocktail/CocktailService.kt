@@ -18,8 +18,15 @@ class CocktailService(private val cocktailDao: CocktailDao) {
         return cocktailDao.getCocktailNames(name)
     }
 
-    fun getLightCocktails(name: String, start: Int?, limit: Int?): List<CocktailLight> {
-        return cocktailDao.getLightCocktails(name, start ?: START, limit ?: LIMIT).sortedBy { it.id }
+    fun getLightCocktails(name: String, start: Int?, limit: Int?): CocktailPage {
+        val definedStart = start ?: START
+        val definedLimit = limit ?: LIMIT
+        val cocktails = cocktailDao.getLightCocktails(name, definedStart, definedLimit)
+        return CocktailPage(
+            cocktails.size >= definedLimit,
+            if (cocktails.isEmpty()) 0 else cocktails.last().id,
+            cocktails
+        )
     }
 
     fun getLightCocktails(ingredientId: Int, start: Int?, limit: Int?): List<CocktailLight> {

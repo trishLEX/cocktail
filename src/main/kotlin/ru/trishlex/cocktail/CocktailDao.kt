@@ -37,7 +37,8 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
                 "    where id > :id and lower(name) like lower(:name)\n" +
                 "    order by id\n" +
                 "    limit :limit\n" +
-                ")"
+                ")\n" +
+                "order by c.id"
 
         private const val GET_LIGHT_COCKTAILS_BY_INGREDIENT_ID = "" +
                 "select\n" +
@@ -162,8 +163,8 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
         ) { rs, _ -> CocktailName(rs.getInt("id"), rs.getString("name")) }
     }
 
-    fun getLightCocktails(name: String, start: Int, limit: Int): List<CocktailLight> {
-        val cocktails = HashMap<Int, CocktailLight>()
+    fun getLightCocktails(name: String, start: Int, limit: Int): List<PagedCocktailLight> {
+        val cocktails = LinkedHashMap<Int, PagedCocktailLight>()
         namedJdbcTemplate.query(
             GET_LIGHT_COCKTAILS,
             MapSqlParameterSource()
@@ -176,10 +177,11 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
                 val cocktailLight = cocktails.computeIfAbsent(
                     cocktailId
                 ) { id ->
-                    CocktailLight(
+                    PagedCocktailLight(
                         id,
                         rs.getString("cname"),
                         rs.getBytes("cpreview"),
+                        0,
                         ArrayList()
                     )
                 }
