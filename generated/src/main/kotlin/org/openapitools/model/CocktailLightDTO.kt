@@ -9,6 +9,7 @@ import javax.validation.Valid
  * @param id 
  * @param name 
  * @param preview 
+ * @param missingIngredientsCount 
  * @param ingredients 
  */
 data class CocktailLightDTO(
@@ -21,6 +22,9 @@ data class CocktailLightDTO(
 
     @Schema(example = "null", description = "")
     @field:JsonProperty("preview") val preview: kotlin.ByteArray? = null,
+
+    @Schema(example = "null", description = "")
+    @field:JsonProperty("missingIngredientsCount") val missingIngredientsCount: kotlin.Int? = null,
 
     @field:Valid
     @Schema(example = "null", description = "")

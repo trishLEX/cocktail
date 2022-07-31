@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController
 class Api : DefaultApi {
 
     override fun ping(): ResponseEntity<PingResponse> {
+        throw UnsupportedOperationException()
         return ResponseEntity.ok(PingResponse("hello world!"))
     }
 }

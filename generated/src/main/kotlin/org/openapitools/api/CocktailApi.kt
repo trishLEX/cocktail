@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import org.openapitools.model.CocktailDTO
 import org.openapitools.model.CocktailLightDTO
 import org.openapitools.model.CocktailNameDTO
+import org.openapitools.model.PagedCocktailLightResponse
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
@@ -26,6 +27,23 @@ import javax.validation.constraints.NotNull
 @Validated
 @RequestMapping("\${api.base-path:}")
 interface CocktailApi {
+
+    @Operation(
+        summary = "",
+        operationId = "getAllCocktailsByIngredients",
+        description = "",
+        responses = [
+            ApiResponse(responseCode = "200", description = "OK", content = [Content(schema = Schema(implementation = PagedCocktailLightResponse::class))])
+        ]
+    )
+    @RequestMapping(
+            method = [RequestMethod.GET],
+            value = ["/cocktails/ingredients/search"],
+            produces = ["application/json"]
+    )
+    fun getAllCocktailsByIngredients(@NotNull @Parameter(description = "", required = true) @Valid @RequestParam(value = "ingredientIds", required = true) ingredientIds: kotlin.collections.List<kotlin.Int>,@Parameter(description = "") @Valid @RequestParam(value = "start", required = false) start: kotlin.Int?,@Parameter(description = "") @Valid @RequestParam(value = "limit", required = false) limit: kotlin.Int?): ResponseEntity<PagedCocktailLightResponse> {
+        return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
+    }
 
     @Operation(
         summary = "",

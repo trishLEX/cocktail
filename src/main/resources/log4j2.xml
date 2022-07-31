@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+
+    <Properties>
+        <Property name="LOGS">./logs</Property>
+    </Properties>
+
+    <Appenders>
+        <RollingFile
+                name="MAIN"
+                append="true"
+                immediateFlush="true"
+                fileName="${LOGS}/cocktails.log"
+                filePattern="${LOGS}/cocktails.log.%d{yyyy-MM-dd}.gz">
+            <PatternLayout>
+                <pattern>[%d] %-5p [%t] %m%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy modulate="true"/>
+            </Policies>
+            <DefaultRolloverStrategy>
+                <Delete basePath="${LOGS}" maxDepth="1">
+                    <IfAny>
+                        <IfAll>
+                            <IfFileName glob="cocktails.log.*.gz"/>
+                            <IfLastModified age="7d"/>
+                        </IfAll>
+                        <IfAll>
+                            <IfFileName regex="cocktails\.log\..+(?&lt;!\.gz)"/>
+                            <IfLastModified age="1d"/>
+                        </IfAll>
+                    </IfAny>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+
+        <Console name="CONSOLE" target="SYSTEM_OUT">
+            <PatternLayout>
+                <pattern>[%d] %-5p [%t] %m%n</pattern>
+            </PatternLayout>
+        </Console>
+
+    </Appenders>
+    <Loggers>
+        <Root level="INFO">
+            <AppenderRef ref="MAIN"/>
+            <AppenderRef ref="CONSOLE"/>
+        </Root>
+    </Loggers>
+</Configuration>

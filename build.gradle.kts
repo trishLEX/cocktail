@@ -31,6 +31,7 @@ configurations {
     implementation.configure {
         exclude(module = "spring-boot-starter-tomcat")
         exclude("org.apache.tomcat")
+        exclude(module = "spring-boot-starter-logging")
     }
 }
 
@@ -48,6 +49,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-configuration-processor")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-configuration-processor")
+    implementation("org.springframework.boot:spring-boot-starter-log4j2")
 
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")

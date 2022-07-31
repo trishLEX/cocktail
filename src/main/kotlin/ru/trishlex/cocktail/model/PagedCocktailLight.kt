@@ -2,15 +2,16 @@ package ru.trishlex.cocktail.model
 
 import org.openapitools.model.CocktailLightDTO
 
-data class CocktailLight(
+data class PagedCocktailLight(
     val id: Int,
     val name: String,
     val preview: ByteArray,
+    val missingIngredientsCount: Int,
     val ingredients: ArrayList<CocktailIngredient> = ArrayList()
 ) {
 
     fun toDto(): CocktailLightDTO {
-        return CocktailLightDTO(id = id, name = name, preview = preview, ingredients = ingredients.map { it.toDto() })
+        return CocktailLightDTO(id, name, preview, missingIngredientsCount, ingredients.map { it.toDto() })
     }
 
     override fun equals(other: Any?): Boolean {

@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service
 import ru.trishlex.cocktail.model.Cocktail
 import ru.trishlex.cocktail.model.CocktailLight
 import ru.trishlex.cocktail.model.CocktailName
+import ru.trishlex.cocktail.model.CocktailPage
 
 @Service
 class CocktailService(private val cocktailDao: CocktailDao) {
@@ -27,6 +28,25 @@ class CocktailService(private val cocktailDao: CocktailDao) {
 
     fun getLightCocktails(ingredientIds: HashSet<Int>, start: Int?, limit: Int?): List<CocktailLight> {
         return cocktailDao.getCocktailsByIngredientIds(ingredientIds, start ?: START, limit ?: LIMIT).sortedBy { it.id }
+    }
+
+    fun getAllLightCocktails(
+        ingredientIds: HashSet<Int>,
+        start: Int?,
+        limit: Int?
+    ): CocktailPage {
+        val definedStart = start ?: START
+        val definedLimit = limit ?: LIMIT
+        val cocktails = cocktailDao.getAllCocktailsByIngredientIds(
+            ingredientIds,
+            definedStart,
+            definedLimit
+        )
+        return CocktailPage(
+            cocktails.size >= definedLimit,
+            definedStart + definedLimit,
+            cocktails
+        )
     }
 
     fun getLightCocktails(ids: List<Int>, start: Int?, limit: Int?): List<CocktailLight> {

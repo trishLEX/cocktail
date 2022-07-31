@@ -4,6 +4,7 @@ import org.openapitools.api.CocktailApi
 import org.openapitools.model.CocktailDTO
 import org.openapitools.model.CocktailLightDTO
 import org.openapitools.model.CocktailNameDTO
+import org.openapitools.model.PagedCocktailLightResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
@@ -32,6 +33,16 @@ class CocktailController(private val cocktailService: CocktailService) : Cocktai
         limit: Int?
     ): ResponseEntity<List<CocktailLightDTO>> {
         return ResponseEntity.ok(cocktailService.getLightCocktails(ingredientIds.toHashSet(), start, limit).map { it.toDto() })
+    }
+
+    override fun getAllCocktailsByIngredients(
+        ingredientIds: List<Int>,
+        start: Int?,
+        limit: Int?
+    ): ResponseEntity<PagedCocktailLightResponse> {
+        return ResponseEntity.ok(
+            cocktailService.getAllLightCocktails(ingredientIds.toHashSet(), start, limit).toDto()
+        )
     }
 
     override fun getCocktailsByIds(ids: List<Int>, start: Int?, limit: Int?): ResponseEntity<List<CocktailLightDTO>> {
