@@ -4,6 +4,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
 import ru.trishlex.cocktail.model.*
+import ru.trishlex.ingredient.model.IngredientType
 import ru.trishlex.util.ArraySql
 import java.sql.JDBCType
 
@@ -27,6 +28,7 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
                 "    i.id iid,\n" +
                 "    i.name iname,\n" +
                 "    i.preview ipreview,\n" +
+                "    i.type itype,\n" +
                 "    ci.amount ciamount,\n" +
                 "    ci.unit ciunit\n" +
                 "from cocktail c\n" +
@@ -48,6 +50,7 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
                 "   i.id iid,\n" +
                 "   i.name iname,\n" +
                 "   i.preview ipreview,\n" +
+                "   i.type itype,\n" +
                 "   ci.amount ciamount,\n" +
                 "   ci.unit ciunit\n" +
                 "from cocktail c\n" +
@@ -68,6 +71,7 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
                 "   i.id iid,\n" +
                 "   i.name iname,\n" +
                 "   i.preview ipreview,\n" +
+                "   i.type itype,\n" +
                 "   ci.amount ciamount,\n" +
                 "   ci.unit ciunit\n" +
                 "from cocktail c\n" +
@@ -88,6 +92,7 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
                 "    i.id iid,\n" +
                 "    i.name iname,\n" +
                 "    i.preview ipreview,\n" +
+                "    i.type itype,\n" +
                 "    ci.amount ciamount,\n" +
                 "    ci.unit ciunit,\n" +
                 "    cardinality(c.ingredients - :ingredientIds) missing_count\n" +
@@ -117,6 +122,7 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
                 "   i.id iid,\n" +
                 "   i.name iname,\n" +
                 "   i.preview ipreview,\n" +
+                "   i.type itype,\n" +
                 "   ci.amount ciamount,\n" +
                 "   ci.unit ciunit\n" +
                 "from cocktail c\n" +
@@ -141,6 +147,7 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
                 "    i.id iid,\n" +
                 "    i.name iname,\n" +
                 "    i.preview ipreview,\n" +
+                "    i.type itype,\n" +
                 "    ci.amount ciamount,\n" +
                 "    ci.unit ciunit\n" +
                 "from cocktail c\n" +
@@ -190,6 +197,7 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
                     rs.getInt("iid"),
                     rs.getString("iname"),
                     rs.getBytes("ipreview"),
+                    IngredientType.fromType(rs.getString("itype")),
                     rs.getInt("ciamount"),
                     rs.getString("ciunit")
                 )
@@ -229,6 +237,7 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
                     rs.getInt("iid"),
                     rs.getString("iname"),
                     rs.getBytes("ipreview"),
+                    IngredientType.fromType(rs.getString("itype")),
                     rs.getInt("ciamount"),
                     rs.getString("ciunit")
                 )
@@ -279,6 +288,7 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
                     rs.getInt("iid"),
                     rs.getString("iname"),
                     rs.getBytes("ipreview"),
+                    IngredientType.fromType(rs.getString("itype")),
                     rs.getInt("ciamount"),
                     rs.getString("ciunit")
                 )
@@ -315,6 +325,7 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
                     rs.getInt("iid"),
                     rs.getString("iname"),
                     rs.getBytes("ipreview"),
+                    IngredientType.fromType(rs.getString("itype")),
                     rs.getInt("ciamount"),
                     rs.getString("ciunit")
                 )
@@ -356,6 +367,7 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
                     rs.getInt("iid"),
                     rs.getString("iname"),
                     rs.getBytes("ipreview"),
+                    IngredientType.fromType(rs.getString("itype")),
                     rs.getInt("ciamount"),
                     rs.getString("ciunit")
                 )
@@ -392,6 +404,7 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
                     rs.getInt("iid"),
                     rs.getString("iname"),
                     rs.getBytes("ipreview"),
+                    IngredientType.fromType(rs.getString("itype")),
                     rs.getInt("ciamount"),
                     rs.getString("ciunit")
                 )

@@ -376,6 +376,8 @@ components:
           type: integer
         name:
           type: string
+        type:
+          $ref: '#/components/schemas/IngredientTypeDTO'
 
     CocktailsLightResponse:
       type: array
@@ -421,6 +423,8 @@ components:
         preview:
           type: string
           format: byte
+        type:
+          $ref: '#/components/schemas/IngredientTypeDTO'
         amount:
           type: integer
         unit:
@@ -476,6 +480,8 @@ components:
         image:
           type: string
           format: byte
+        type:
+          $ref: '#/components/schemas/IngredientTypeDTO'
         description:
           type: string
         tags:
@@ -498,6 +504,8 @@ components:
           format: byte
         name:
           type: string
+        type:
+          $ref: '#/components/schemas/IngredientTypeDTO'
 
     IngredientTypesResponse:
       type: array

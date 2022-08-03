@@ -11,7 +11,7 @@ class IngredientDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
     companion object {
         private const val LIMIT = 10
         private const val GET_INGREDIENT_NAMES = "" +
-                "select id, name\n" +
+                "select id, name, type\n" +
                 "from ingredient\n" +
                 "where lower(name) like lower(:name)\n" +
                 "order by id\n" +
@@ -21,6 +21,7 @@ class IngredientDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
                 "select\n" +
                 "   id,\n" +
                 "   name,\n" +
+                "   type,\n" +
                 "   preview\n" +
                 "from ingredient\n" +
                 "where id > :id and lower(name) like lower(:name)\n" +
@@ -32,6 +33,7 @@ class IngredientDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
                 "   id,\n" +
                 "   name,\n" +
                 "   image,\n" +
+                "   type,\n" +
                 "   description,\n" +
                 "   tags\n" +
                 "from ingredient\n" +
@@ -41,6 +43,7 @@ class IngredientDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
                 "select\n" +
                 "   id,\n" +
                 "   name,\n" +
+                "   type,\n" +
                 "   preview\n" +
                 "from ingredient\n" +
                 "where id in (:ids)\n" +
@@ -55,7 +58,11 @@ class IngredientDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
             MapSqlParameterSource()
                 .addValue("name", "%$name%")
                 .addValue("limit", LIMIT)
-        ) { rs, _ -> IngredientName(rs.getInt("id"), rs.getString("name")) }
+        ) { rs, _ -> IngredientName(
+            rs.getInt("id"),
+            rs.getString("name"),
+            IngredientType.fromType(rs.getString("type")),
+        ) }
     }
 
     fun getIngredients(name: String, start: Int, limit: Int): List<IngredientLight> {
@@ -68,7 +75,8 @@ class IngredientDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
         ) { rs, _ -> IngredientLight(
             rs.getInt("id"),
             rs.getString("name"),
-            rs.getBytes("preview")
+            rs.getBytes("preview"),
+            IngredientType.fromType(rs.getString("type")),
         )}
     }
 
@@ -79,7 +87,8 @@ class IngredientDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
         ) { rs, _ -> IngredientLight(
             rs.getInt("id"),
             rs.getString("name"),
-            rs.getBytes("preview")
+            rs.getBytes("preview"),
+            IngredientType.fromType(rs.getString("type")),
         )}
     }
 
@@ -91,6 +100,7 @@ class IngredientDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
             rs.getInt("id"),
             rs.getString("name"),
             rs.getBytes("image"),
+            IngredientType.fromType(rs.getString("type")),
             rs.getString("description"),
             ((rs.getArray("tags").array) as Array<String>).toList()
         )}!!

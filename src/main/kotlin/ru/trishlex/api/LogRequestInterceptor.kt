@@ -12,7 +12,12 @@ class LogRequestInterceptor : AsyncHandlerInterceptor {
     private val log by injectedLogger()
 
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
-        log.info("Request: ${request.requestURL}\tparams: ${request.parameterMap}")
+        var ipAddress = request.getHeader("X-Forward-For")
+
+        if (ipAddress == null) {
+            ipAddress = request.remoteAddr
+        }
+        log.debug("Request: ${request.requestURL}\tparams: ${request.parameterMap}\tip: $ipAddress")
         return super.preHandle(request, response, handler)
     }
 }

@@ -5,11 +5,12 @@ import org.openapitools.model.IngredientLightDTO
 data class IngredientLight(
     val id: Int,
     val name: String,
-    val preview: ByteArray
+    val preview: ByteArray,
+    val type: IngredientType
 ) {
 
     fun toDto(): IngredientLightDTO {
-        return IngredientLightDTO(id, preview, name)
+        return IngredientLightDTO(id, preview, name, type.toDto())
     }
 
     override fun equals(other: Any?): Boolean {

@@ -6,12 +6,13 @@ data class Ingredient(
     val id: Int,
     val name: String,
     val image: ByteArray,
+    val type: IngredientType,
     val description: String,
     val tags: List<String>
 ) {
 
     fun toDto(): IngredientDTO {
-        return IngredientDTO(id, name, image, description, tags)
+        return IngredientDTO(id, name, image, type.toDto(), description, tags)
     }
 
     override fun equals(other: Any?): Boolean {
