@@ -13,7 +13,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import org.openapitools.model.IngredientDTO
 import org.openapitools.model.IngredientLightDTO
 import org.openapitools.model.IngredientNameDTO
-import org.openapitools.model.SearchIngredientDTO
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
@@ -67,7 +66,7 @@ interface IngredientApi {
         operationId = "getIngredientTypes",
         description = "",
         responses = [
-            ApiResponse(responseCode = "200", description = "OK", content = [Content(schema = Schema(implementation = SearchIngredientDTO::class))])
+            ApiResponse(responseCode = "200", description = "OK", content = [Content(schema = Schema(implementation = IngredientLightDTO::class))])
         ]
     )
     @RequestMapping(
@@ -75,7 +74,7 @@ interface IngredientApi {
             value = ["/ingredients/types"],
             produces = ["application/json"]
     )
-    fun getIngredientTypes(): ResponseEntity<List<SearchIngredientDTO>> {
+    fun getIngredientTypes(): ResponseEntity<List<IngredientLightDTO>> {
         return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 

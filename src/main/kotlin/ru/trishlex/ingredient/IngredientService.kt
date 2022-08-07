@@ -5,14 +5,13 @@ import org.springframework.stereotype.Service
 import ru.trishlex.ingredient.model.Ingredient
 import ru.trishlex.ingredient.model.IngredientLight
 import ru.trishlex.ingredient.model.IngredientName
-import ru.trishlex.ingredient.model.SearchIngredient
 import java.util.concurrent.TimeUnit
 
 @Service
 class IngredientService(private val ingredientDao: IngredientDao) {
 
     private val ingredientTypeCache = Suppliers.memoizeWithExpiration(
-        { ingredientDao.getSearchIngredients().sortedBy { it.ingredientType.ordinal } },
+        { ingredientDao.getSearchIngredients().sortedBy { it.type.ordinal } },
         1,
         TimeUnit.HOURS
     )
@@ -38,7 +37,7 @@ class IngredientService(private val ingredientDao: IngredientDao) {
         return ingredientDao.getIngredients(ids)
     }
 
-    fun getSearchIngredients(): List<SearchIngredient> {
+    fun getSearchIngredients(): List<IngredientLight> {
         return ingredientTypeCache.get()
     }
 }

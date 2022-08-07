@@ -3,7 +3,10 @@ package ru.trishlex.ingredient
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
-import ru.trishlex.ingredient.model.*
+import ru.trishlex.ingredient.model.Ingredient
+import ru.trishlex.ingredient.model.IngredientLight
+import ru.trishlex.ingredient.model.IngredientName
+import ru.trishlex.ingredient.model.IngredientType
 
 @Repository
 class IngredientDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
@@ -49,7 +52,7 @@ class IngredientDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
                 "where id in (:ids)\n" +
                 "order by id"
 
-        private const val GET_SEARCH_INGREDIENTS = "select id, name, type from ingredient"
+        private const val GET_SEARCH_INGREDIENTS = "select id, name, preview, type from ingredient"
     }
 
     fun getIngredientNames(name: String): List<IngredientName> {
@@ -106,13 +109,14 @@ class IngredientDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
         )}!!
     }
 
-    fun getSearchIngredients(): List<SearchIngredient> {
+    fun getSearchIngredients(): List<IngredientLight> {
         return namedJdbcTemplate.query(
             GET_SEARCH_INGREDIENTS
         ) { rs, _ ->
-            SearchIngredient(
+            IngredientLight(
                 rs.getInt("id"),
                 rs.getString("name"),
+                rs.getBytes("preview"),
                 IngredientType.fromType(rs.getString("type"))
             )
         }
