@@ -46,6 +46,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CocktailsLightResponse'
+    post:
+      tags:
+        - cocktail
+      operationId: saveCocktail
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SaveCocktailRequestDTO'
+      responses:
+        200:
+          description: OK
 
   /v2/cocktails:
     get:
@@ -471,6 +483,46 @@ components:
           type: array
           items:
             type: string
+
+    SaveCocktailRequestDTO:
+      type: object
+      properties:
+        name:
+          type: string
+        image:
+          type: string
+          format: byte
+        preview:
+          type: string
+          format: byte
+        ingredients:
+          type: array
+          items:
+            $ref: '#/components/schemas/SaveIngredientRequestDTO'
+        tools:
+          type: array
+          items:
+            type: integer
+        instructions:
+          type: array
+          items:
+            type: string
+        description:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+
+    SaveIngredientRequestDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        amount:
+          type: integer
+        unit:
+          type: string
 
     CocktailToolDTO:
       type: object

@@ -1,13 +1,14 @@
 package ru.trishlex.cocktail
 
 import org.springframework.stereotype.Service
-import ru.trishlex.cocktail.model.Cocktail
-import ru.trishlex.cocktail.model.CocktailLight
-import ru.trishlex.cocktail.model.CocktailName
-import ru.trishlex.cocktail.model.CocktailPage
+import org.springframework.transaction.annotation.Transactional
+import ru.trishlex.cocktail.model.*
 
 @Service
-class CocktailService(private val cocktailDao: CocktailDao) {
+class CocktailService(
+    private val cocktailDao: CocktailDao,
+    private val cocktailIngredientsDao: CocktailIngredientsDao
+) {
 
     companion object {
         private const val START = 0
@@ -62,5 +63,11 @@ class CocktailService(private val cocktailDao: CocktailDao) {
 
     fun getCocktail(id: Int): Cocktail {
         return cocktailDao.getCocktail(id)
+    }
+
+    @Transactional
+    fun saveCocktail(saveCocktail: SaveCocktail) {
+        val id = cocktailDao.saveCocktail(saveCocktail)
+        cocktailIngredientsDao.saveCocktailIngredients(id, saveCocktail.ingredients)
     }
 }

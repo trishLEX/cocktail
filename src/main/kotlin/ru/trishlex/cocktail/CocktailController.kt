@@ -1,12 +1,10 @@
 package ru.trishlex.cocktail
 
 import org.openapitools.api.CocktailApi
-import org.openapitools.model.CocktailDTO
-import org.openapitools.model.CocktailLightDTO
-import org.openapitools.model.CocktailNameDTO
-import org.openapitools.model.PagedCocktailLightResponse
+import org.openapitools.model.*
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
+import ru.trishlex.cocktail.model.SaveCocktail
 
 @RestController
 class CocktailController(private val cocktailService: CocktailService) : CocktailApi {
@@ -55,5 +53,10 @@ class CocktailController(private val cocktailService: CocktailService) : Cocktai
         limit: Int?
     ): ResponseEntity<PagedCocktailLightResponse> {
         return ResponseEntity.ok(cocktailService.getLightCocktails(name, start, limit).toDto())
+    }
+
+    override fun saveCocktail(saveCocktailRequestDTO: SaveCocktailRequestDTO?): ResponseEntity<Unit> {
+        cocktailService.saveCocktail(SaveCocktail(saveCocktailRequestDTO!!))
+        return ResponseEntity.ok().build()
     }
 }
