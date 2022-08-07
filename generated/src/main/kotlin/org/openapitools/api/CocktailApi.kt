@@ -10,17 +10,11 @@ import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
-import org.openapitools.model.CocktailDTO
-import org.openapitools.model.CocktailLightDTO
-import org.openapitools.model.CocktailNameDTO
-import org.openapitools.model.PagedCocktailLightResponse
+import org.openapitools.model.*
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 import javax.validation.constraints.NotNull
 
@@ -161,6 +155,23 @@ interface CocktailApi {
             produces = ["application/json"]
     )
     fun getCocktailsByName(@NotNull @Parameter(description = "", required = true) @Valid @RequestParam(value = "name", required = true) name: kotlin.String,@Parameter(description = "") @Valid @RequestParam(value = "start", required = false) start: kotlin.Int?,@Parameter(description = "") @Valid @RequestParam(value = "limit", required = false) limit: kotlin.Int?): ResponseEntity<PagedCocktailLightResponse> {
+        return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
+    }
+
+    @Operation(
+        summary = "",
+        operationId = "saveCocktail",
+        description = "",
+        responses = [
+            ApiResponse(responseCode = "200", description = "OK")
+        ]
+    )
+    @RequestMapping(
+            method = [RequestMethod.POST],
+            value = ["/cocktails"],
+            consumes = ["application/json"]
+    )
+    fun saveCocktail(@Parameter(description = "") @Valid @RequestBody(required = false) saveCocktailRequestDTO: SaveCocktailRequestDTO?): ResponseEntity<Unit> {
         return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 }

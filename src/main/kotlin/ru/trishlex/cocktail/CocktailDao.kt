@@ -2,6 +2,7 @@ package ru.trishlex.cocktail
 
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
+import org.springframework.jdbc.support.GeneratedKeyHolder
 import org.springframework.stereotype.Repository
 import ru.trishlex.cocktail.model.*
 import ru.trishlex.ingredient.model.IngredientType
@@ -158,6 +159,29 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
                 "    where id > :id and id in (:ids)\n" +
                 "    order by id\n" +
                 "    limit :limit\n" +
+                ")"
+
+        private const val SAVE_COCKTAIL = "" +
+                "insert into cocktail (\n" +
+                "   name,\n" +
+                "   image,\n" +
+                "   preview,\n" +
+                "   ingredients,\n" +
+                "   tools,\n" +
+                "   instructions,\n" +
+                "   description,\n" +
+                "   tags,\n" +
+                "   is_custom\n" +
+                ") values (\n" +
+                "   :name,\n" +
+                "   :image,\n" +
+                "   :preview,\n" +
+                "   :ingredients,\n" +
+                "   :tools,\n" +
+                "   :instructions,\n" +
+                "   :description,\n" +
+                "   :tags,\n" +
+                "   true\n" +
                 ")"
     }
 
@@ -413,5 +437,24 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
             }
         }
         return ArrayList(cocktails.values)
+    }
+
+    fun saveCocktail(saveCocktail: SaveCocktail): Int {
+        val generatedKeyHolder = GeneratedKeyHolder()
+        namedJdbcTemplate.update(
+            SAVE_COCKTAIL,
+            MapSqlParameterSource()
+                .addValue("name", saveCocktail.name)
+                .addValue("image", saveCocktail.image)
+                .addValue("preview", saveCocktail.preview)
+                .addValue("ingredients", ArraySql.create(saveCocktail.ingredients.map { it.id }, JDBCType.INTEGER))
+                .addValue("tools", ArraySql.create(saveCocktail.toolIds, JDBCType.INTEGER))
+                .addValue("instructions", ArraySql.create(saveCocktail.instructions, JDBCType.VARCHAR))
+                .addValue("description", saveCocktail.description)
+                .addValue("tags", ArraySql.create(saveCocktail.tags, JDBCType.VARCHAR)),
+            generatedKeyHolder,
+            arrayOf("id")
+        )
+        return generatedKeyHolder.key!!.toInt()
     }
 }
