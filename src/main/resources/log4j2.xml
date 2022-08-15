@@ -9,7 +9,7 @@
         <RollingFile
                 name="MAIN"
                 append="true"
-                immediateFlush="true"
+                immediateFlush="false"
                 fileName="${LOGS}/cocktails.log"
                 filePattern="${LOGS}/cocktails.log.%d{yyyy-MM-dd}.gz">
             <PatternLayout>
