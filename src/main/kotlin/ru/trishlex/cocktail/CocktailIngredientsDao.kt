@@ -22,6 +22,11 @@ class CocktailIngredientsDao(private val namedJdbcTemplate: NamedParameterJdbcTe
                 :unit
             )
         """
+
+        private const val DELETE_INGREDIENTS = """
+            delete from cocktail_ingredients
+            where cocktail_id = :cocktailId and ingredient_id in (:ingredientIds)
+        """
     }
 
     fun saveCocktailIngredients(cocktailId: Int, saveIngredients: List<SaveIngredient>) {
@@ -34,6 +39,15 @@ class CocktailIngredientsDao(private val namedJdbcTemplate: NamedParameterJdbcTe
                     .addValue("amount", it.amount)
                     .addValue("unit", it.unit)
             }.toTypedArray()
+        )
+    }
+
+    fun deleteCocktailIngredients(cocktailId: Int, ingredientIds: Collection<Int>) {
+        namedJdbcTemplate.update(
+            DELETE_INGREDIENTS,
+            MapSqlParameterSource()
+                .addValue("cocktailId", cocktailId)
+                .addValue("ingredientIds", ingredientIds)
         )
     }
 }

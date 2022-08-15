@@ -48,6 +48,7 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
                 "   c.id cid,\n" +
                 "   c.name cname,\n" +
                 "   c.preview cpreview,\n" +
+                "   c.is_custom ciscustom,\n" +
                 "   i.id iid,\n" +
                 "   i.name iname,\n" +
                 "   i.preview ipreview,\n" +
@@ -69,6 +70,7 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
                 "   c.id cid,\n" +
                 "   c.name cname,\n" +
                 "   c.preview cpreview,\n" +
+                "   c.is_custom ciscustom,\n" +
                 "   i.id iid,\n" +
                 "   i.name iname,\n" +
                 "   i.preview ipreview,\n" +
@@ -120,6 +122,7 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
                 "   c.description cdescription,\n" +
                 "   c.tags ctags,\n" +
                 "   c.tools ctools,\n" +
+                "   c.is_custom ciscustom,\n" +
                 "   i.id iid,\n" +
                 "   i.name iname,\n" +
                 "   i.preview ipreview,\n" +
@@ -145,6 +148,7 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
                 "    c.id cid,\n" +
                 "    c.name cname,\n" +
                 "    c.preview cpreview,\n" +
+                "    c.is_custom ciscustom,\n" +
                 "    i.id iid,\n" +
                 "    i.name iname,\n" +
                 "    i.preview ipreview,\n" +
@@ -183,6 +187,20 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
                 "   :tags,\n" +
                 "   true\n" +
                 ")"
+
+        private const val UPDATE_COCKTAIL = """
+            update cocktail
+            set
+                name = :name,
+                image = :image,
+                preview = :preview,
+                ingredients = :ingredients,
+                tools = :tools,
+                instructions = :instructions,
+                description = :description,
+                tags = :tags
+            where id = :id and is_custom = true
+        """
     }
 
     fun getCocktailNames(name: String): List<CocktailName> {
@@ -254,6 +272,7 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
                         (rs.getArray("cinstructions").array as Array<String>).toList(),
                         rs.getString("cdescription"),
                         (rs.getArray("ctags").array as Array<String>).toList(),
+                        rs.getBoolean("ciscustom")
                     )
                 }
 
@@ -304,7 +323,8 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
                         id,
                         rs.getString("cname"),
                         rs.getBytes("cpreview"),
-                        ArrayList()
+                        ArrayList(),
+                        rs.getBoolean("ciscustom")
                     )
                 }
 
@@ -341,7 +361,8 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
                         id,
                         rs.getString("cname"),
                         rs.getBytes("cpreview"),
-                        ArrayList()
+                        ArrayList(),
+                        rs.getBoolean("ciscustom")
                     )
                 }
 
@@ -420,7 +441,8 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
                         id,
                         rs.getString("cname"),
                         rs.getBytes("cpreview"),
-                        ArrayList()
+                        ArrayList(),
+                        rs.getBoolean("ciscustom")
                     )
                 }
 
@@ -456,5 +478,21 @@ class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
             arrayOf("id")
         )
         return generatedKeyHolder.key!!.toInt()
+    }
+
+    fun updateCocktail(saveCocktail: SaveCocktail): Int {
+        return namedJdbcTemplate.update(
+            UPDATE_COCKTAIL,
+            MapSqlParameterSource()
+                .addValue("id", saveCocktail.id!!)
+                .addValue("name", saveCocktail.name)
+                .addValue("image", saveCocktail.image)
+                .addValue("preview", saveCocktail.preview)
+                .addValue("ingredients", ArraySql.create(saveCocktail.ingredients.map { it.id }, JDBCType.INTEGER))
+                .addValue("tools", ArraySql.create(saveCocktail.toolIds, JDBCType.INTEGER))
+                .addValue("instructions", ArraySql.create(saveCocktail.instructions, JDBCType.VARCHAR))
+                .addValue("description", saveCocktail.description)
+                .addValue("tags", ArraySql.create(saveCocktail.tags, JDBCType.VARCHAR))
+        )
     }
 }

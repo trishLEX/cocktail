@@ -11,7 +11,8 @@ data class Cocktail(
     val toolIds: List<Int> = ArrayList(),
     val instructions: List<String> = ArrayList(),
     val description: String?,
-    val tags: List<String> = ArrayList()
+    val tags: List<String> = ArrayList(),
+    val isCustom: Boolean
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -37,7 +38,8 @@ data class Cocktail(
             tools.map { it.toDto() },
             instructions,
             description,
-            tags
+            tags,
+            isCustom
         )
     }
 }

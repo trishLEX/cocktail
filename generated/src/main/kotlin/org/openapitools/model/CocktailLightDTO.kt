@@ -11,6 +11,7 @@ import javax.validation.Valid
  * @param preview 
  * @param missingIngredientsCount 
  * @param ingredients 
+ * @param isCustom 
  */
 data class CocktailLightDTO(
 
@@ -28,7 +29,10 @@ data class CocktailLightDTO(
 
     @field:Valid
     @Schema(example = "null", description = "")
-    @field:JsonProperty("ingredients") val ingredients: kotlin.collections.List<CocktailIngredientDTO>? = null
+    @field:JsonProperty("ingredients") val ingredients: kotlin.collections.List<CocktailIngredientDTO>? = null,
+
+    @Schema(example = "null", description = "")
+    @field:JsonProperty("isCustom") val isCustom: kotlin.Boolean? = null
 ) {
 
 }

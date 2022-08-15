@@ -67,7 +67,16 @@ class CocktailService(
 
     @Transactional
     fun saveCocktail(saveCocktail: SaveCocktail) {
-        val id = cocktailDao.saveCocktail(saveCocktail)
+        val id = if (saveCocktail.id != null) {
+            val updated = cocktailDao.updateCocktail(saveCocktail)
+            if (updated == 0) {
+                throw IllegalArgumentException("No updated, id: ${saveCocktail.id}")
+            }
+            saveCocktail.id
+        } else {
+            cocktailDao.saveCocktail(saveCocktail)
+        }
+        cocktailIngredientsDao.deleteCocktailIngredients(id, saveCocktail.ingredients.map { it.id }.toList())
         cocktailIngredientsDao.saveCocktailIngredients(id, saveCocktail.ingredients)
     }
 }

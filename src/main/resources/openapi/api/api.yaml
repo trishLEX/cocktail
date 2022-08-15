@@ -437,6 +437,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CocktailIngredientDTO'
+        isCustom:
+          type: boolean
 
     CocktailIngredientDTO:
       type: object
@@ -483,10 +485,14 @@ components:
           type: array
           items:
             type: string
+        isCustom:
+          type: boolean
 
     SaveCocktailRequestDTO:
       type: object
       properties:
+        id:
+          type: integer
         name:
           type: string
         image:

@@ -3,6 +3,7 @@ package ru.trishlex.cocktail.model
 import org.openapitools.model.SaveCocktailRequestDTO
 
 data class SaveCocktail(
+    val id: Int?,
     val name: String,
     val preview: ByteArray,
     val image: ByteArray,
@@ -14,6 +15,7 @@ data class SaveCocktail(
 ) {
 
     constructor(saveCocktailRequestDTO: SaveCocktailRequestDTO): this(
+        saveCocktailRequestDTO.id,
         saveCocktailRequestDTO.name!!,
         saveCocktailRequestDTO.preview!!,
         saveCocktailRequestDTO.image!!,
