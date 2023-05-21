@@ -10,7 +10,7 @@ import io.swagger.v3.oas.annotations.enums.*
 import io.swagger.v3.oas.annotations.media.*
 import io.swagger.v3.oas.annotations.responses.*
 import io.swagger.v3.oas.annotations.security.*
-import org.openapitools.model.PingResponse
+import org.openapitools.model.ToolLightDTO
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
@@ -18,22 +18,22 @@ import org.springframework.web.bind.annotation.*
 
 @Validated
 @RequestMapping("\${api.base-path:}")
-interface DefaultApi {
+interface ToolApi {
 
     @Operation(
         summary = "",
-        operationId = "ping",
+        operationId = "getTools",
         description = "",
         responses = [
-            ApiResponse(responseCode = "200", description = "OK", content = [Content(schema = Schema(implementation = PingResponse::class))])
+            ApiResponse(responseCode = "200", description = "OK", content = [Content(schema = Schema(implementation = ToolLightDTO::class))])
         ]
     )
     @RequestMapping(
             method = [RequestMethod.GET],
-            value = ["/ping"],
+            value = ["/tools/types"],
             produces = ["application/json"]
     )
-    fun ping(): ResponseEntity<PingResponse> {
+    fun getTools(@Parameter(description = "", `in` = ParameterIn.HEADER) @RequestHeader(value = "requestId", required = false) requestId: kotlin.String?): ResponseEntity<List<ToolLightDTO>> {
         return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 }

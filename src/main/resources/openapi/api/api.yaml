@@ -39,6 +39,11 @@ paths:
           required: false
           schema:
             type: integer
+        - in: header
+          name: requestId
+          required: false
+          schema:
+            type: string
       responses:
         200:
           description: OK
@@ -50,6 +55,12 @@ paths:
       tags:
         - cocktail
       operationId: saveCocktail
+      parameters:
+        - in: header
+          name: requestId
+          required: false
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -80,6 +91,11 @@ paths:
           required: false
           schema:
             type: integer
+        - in: header
+          name: requestId
+          required: false
+          schema:
+            type: string
       responses:
         200:
           description: OK
@@ -109,6 +125,11 @@ paths:
           required: false
           schema:
             type: integer
+        - in: header
+          name: requestId
+          required: false
+          schema:
+            type: string
       responses:
         200:
           description: OK
@@ -140,6 +161,11 @@ paths:
           required: false
           schema:
             type: integer
+        - in: header
+          name: requestId
+          required: false
+          schema:
+            type: string
       responses:
         200:
           description: OK
@@ -171,6 +197,11 @@ paths:
           required: false
           schema:
             type: integer
+        - in: header
+          name: requestId
+          required: false
+          schema:
+            type: string
       responses:
         200:
           description: OK
@@ -190,6 +221,11 @@ paths:
           required: true
           schema:
             type: integer
+        - in: header
+          name: requestId
+          required: false
+          schema:
+            type: string
       responses:
         200:
           description: OK
@@ -221,6 +257,11 @@ paths:
           required: false
           schema:
             type: integer
+        - in: header
+          name: requestId
+          required: false
+          schema:
+            type: string
       responses:
         200:
           description: OK
@@ -240,6 +281,11 @@ paths:
           schema:
             type: string
           required: true
+        - in: header
+          name: requestId
+          required: false
+          schema:
+            type: string
       responses:
         200:
           description: OK
@@ -259,6 +305,11 @@ paths:
           schema:
             type: string
           required: true
+        - in: header
+          name: requestId
+          required: false
+          schema:
+            type: string
       responses:
         200:
           description: OK
@@ -288,6 +339,11 @@ paths:
           required: false
           schema:
             type: integer
+        - in: header
+          name: requestId
+          required: false
+          schema:
+            type: string
       responses:
         200:
           description: OK
@@ -309,6 +365,11 @@ paths:
             type: array
             items:
               type: integer
+        - in: header
+          name: requestId
+          required: false
+          schema:
+            type: string
       responses:
         200:
           description: OK
@@ -328,6 +389,11 @@ paths:
           schema:
             type: integer
           required: true
+        - in: header
+          name: requestId
+          required: false
+          schema:
+            type: string
       responses:
         200:
           description: OK
@@ -341,6 +407,12 @@ paths:
       tags:
         - ingredient
       operationId: getIngredientTypes
+      parameters:
+        - in: header
+          name: requestId
+          required: false
+          schema:
+            type: string
       responses:
         200:
           description: OK
@@ -354,6 +426,12 @@ paths:
       tags:
         - tool
       operationId: getTools
+      parameters:
+        - in: header
+          name: requestId
+          required: false
+          schema:
+            type: string
       responses:
         200:
           description: OK

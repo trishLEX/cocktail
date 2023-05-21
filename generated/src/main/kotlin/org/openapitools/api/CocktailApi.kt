@@ -5,11 +5,11 @@
 */
 package org.openapitools.api
 
-import io.swagger.v3.oas.annotations.Operation
-import io.swagger.v3.oas.annotations.Parameter
-import io.swagger.v3.oas.annotations.media.Content
-import io.swagger.v3.oas.annotations.media.Schema
-import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.*
+import io.swagger.v3.oas.annotations.enums.*
+import io.swagger.v3.oas.annotations.media.*
+import io.swagger.v3.oas.annotations.responses.*
+import io.swagger.v3.oas.annotations.security.*
 import org.openapitools.model.*
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -35,7 +35,7 @@ interface CocktailApi {
             value = ["/v2/cocktails/ingredients/search"],
             produces = ["application/json"]
     )
-    fun getAllCocktailsByIngredients(@NotNull @Parameter(description = "", required = true) @Valid @RequestParam(value = "ingredientIds", required = true) ingredientIds: kotlin.collections.List<kotlin.Int>,@Parameter(description = "") @Valid @RequestParam(value = "start", required = false) start: kotlin.Int?,@Parameter(description = "") @Valid @RequestParam(value = "limit", required = false) limit: kotlin.Int?): ResponseEntity<PagedCocktailLightResponse> {
+    fun getAllCocktailsByIngredients(@NotNull @Parameter(description = "", required = true) @Valid @RequestParam(value = "ingredientIds", required = true) ingredientIds: kotlin.collections.List<kotlin.Int>,@Parameter(description = "") @Valid @RequestParam(value = "start", required = false) start: kotlin.Int?,@Parameter(description = "") @Valid @RequestParam(value = "limit", required = false) limit: kotlin.Int?,@Parameter(description = "", `in` = ParameterIn.HEADER) @RequestHeader(value = "requestId", required = false) requestId: kotlin.String?): ResponseEntity<PagedCocktailLightResponse> {
         return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 
@@ -52,7 +52,7 @@ interface CocktailApi {
             value = ["/cocktails/{id}"],
             produces = ["application/json"]
     )
-    fun getCocktail(@Parameter(description = "", required = true) @PathVariable("id") id: kotlin.Int): ResponseEntity<CocktailDTO> {
+    fun getCocktail(@Parameter(description = "", required = true) @PathVariable("id") id: kotlin.Int,@Parameter(description = "", `in` = ParameterIn.HEADER) @RequestHeader(value = "requestId", required = false) requestId: kotlin.String?): ResponseEntity<CocktailDTO> {
         return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 
@@ -69,7 +69,7 @@ interface CocktailApi {
             value = ["/cocktails/names/{name}"],
             produces = ["application/json"]
     )
-    fun getCocktailNames(@Parameter(description = "", required = true) @PathVariable("name") name: kotlin.String): ResponseEntity<List<CocktailNameDTO>> {
+    fun getCocktailNames(@Parameter(description = "", required = true) @PathVariable("name") name: kotlin.String,@Parameter(description = "", `in` = ParameterIn.HEADER) @RequestHeader(value = "requestId", required = false) requestId: kotlin.String?): ResponseEntity<List<CocktailNameDTO>> {
         return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 
@@ -86,7 +86,7 @@ interface CocktailApi {
             value = ["/cocktails"],
             produces = ["application/json"]
     )
-    fun getCocktails(@NotNull @Parameter(description = "", required = true) @Valid @RequestParam(value = "name", required = true) name: kotlin.String,@Parameter(description = "") @Valid @RequestParam(value = "start", required = false) start: kotlin.Int?,@Parameter(description = "") @Valid @RequestParam(value = "limit", required = false) limit: kotlin.Int?): ResponseEntity<List<CocktailLightDTO>> {
+    fun getCocktails(@NotNull @Parameter(description = "", required = true) @Valid @RequestParam(value = "name", required = true) name: kotlin.String,@Parameter(description = "") @Valid @RequestParam(value = "start", required = false) start: kotlin.Int?,@Parameter(description = "") @Valid @RequestParam(value = "limit", required = false) limit: kotlin.Int?,@Parameter(description = "", `in` = ParameterIn.HEADER) @RequestHeader(value = "requestId", required = false) requestId: kotlin.String?): ResponseEntity<List<CocktailLightDTO>> {
         return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 
@@ -103,7 +103,7 @@ interface CocktailApi {
             value = ["/cocktails-by-id"],
             produces = ["application/json"]
     )
-    fun getCocktailsByIds(@NotNull @Parameter(description = "", required = true) @Valid @RequestParam(value = "ids", required = true) ids: kotlin.collections.List<kotlin.Int>,@Parameter(description = "") @Valid @RequestParam(value = "start", required = false) start: kotlin.Int?,@Parameter(description = "") @Valid @RequestParam(value = "limit", required = false) limit: kotlin.Int?): ResponseEntity<List<CocktailLightDTO>> {
+    fun getCocktailsByIds(@NotNull @Parameter(description = "", required = true) @Valid @RequestParam(value = "ids", required = true) ids: kotlin.collections.List<kotlin.Int>,@Parameter(description = "") @Valid @RequestParam(value = "start", required = false) start: kotlin.Int?,@Parameter(description = "") @Valid @RequestParam(value = "limit", required = false) limit: kotlin.Int?,@Parameter(description = "", `in` = ParameterIn.HEADER) @RequestHeader(value = "requestId", required = false) requestId: kotlin.String?): ResponseEntity<List<CocktailLightDTO>> {
         return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 
@@ -120,7 +120,7 @@ interface CocktailApi {
             value = ["/cocktails/ingredients/{id}"],
             produces = ["application/json"]
     )
-    fun getCocktailsByIngredient(@Parameter(description = "", required = true) @PathVariable("id") id: kotlin.Int,@Parameter(description = "") @Valid @RequestParam(value = "start", required = false) start: kotlin.Int?,@Parameter(description = "") @Valid @RequestParam(value = "limit", required = false) limit: kotlin.Int?): ResponseEntity<List<CocktailLightDTO>> {
+    fun getCocktailsByIngredient(@Parameter(description = "", required = true) @PathVariable("id") id: kotlin.Int,@Parameter(description = "") @Valid @RequestParam(value = "start", required = false) start: kotlin.Int?,@Parameter(description = "") @Valid @RequestParam(value = "limit", required = false) limit: kotlin.Int?,@Parameter(description = "", `in` = ParameterIn.HEADER) @RequestHeader(value = "requestId", required = false) requestId: kotlin.String?): ResponseEntity<List<CocktailLightDTO>> {
         return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 
@@ -137,7 +137,7 @@ interface CocktailApi {
             value = ["/cocktails/ingredients"],
             produces = ["application/json"]
     )
-    fun getCocktailsByIngredients(@NotNull @Parameter(description = "", required = true) @Valid @RequestParam(value = "ingredientIds", required = true) ingredientIds: kotlin.collections.List<kotlin.Int>,@Parameter(description = "") @Valid @RequestParam(value = "start", required = false) start: kotlin.Int?,@Parameter(description = "") @Valid @RequestParam(value = "limit", required = false) limit: kotlin.Int?): ResponseEntity<List<CocktailLightDTO>> {
+    fun getCocktailsByIngredients(@NotNull @Parameter(description = "", required = true) @Valid @RequestParam(value = "ingredientIds", required = true) ingredientIds: kotlin.collections.List<kotlin.Int>,@Parameter(description = "") @Valid @RequestParam(value = "start", required = false) start: kotlin.Int?,@Parameter(description = "") @Valid @RequestParam(value = "limit", required = false) limit: kotlin.Int?,@Parameter(description = "", `in` = ParameterIn.HEADER) @RequestHeader(value = "requestId", required = false) requestId: kotlin.String?): ResponseEntity<List<CocktailLightDTO>> {
         return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 
@@ -154,7 +154,7 @@ interface CocktailApi {
             value = ["/v2/cocktails"],
             produces = ["application/json"]
     )
-    fun getCocktailsByName(@NotNull @Parameter(description = "", required = true) @Valid @RequestParam(value = "name", required = true) name: kotlin.String,@Parameter(description = "") @Valid @RequestParam(value = "start", required = false) start: kotlin.Int?,@Parameter(description = "") @Valid @RequestParam(value = "limit", required = false) limit: kotlin.Int?): ResponseEntity<PagedCocktailLightResponse> {
+    fun getCocktailsByName(@NotNull @Parameter(description = "", required = true) @Valid @RequestParam(value = "name", required = true) name: kotlin.String,@Parameter(description = "") @Valid @RequestParam(value = "start", required = false) start: kotlin.Int?,@Parameter(description = "") @Valid @RequestParam(value = "limit", required = false) limit: kotlin.Int?,@Parameter(description = "", `in` = ParameterIn.HEADER) @RequestHeader(value = "requestId", required = false) requestId: kotlin.String?): ResponseEntity<PagedCocktailLightResponse> {
         return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 
@@ -171,7 +171,7 @@ interface CocktailApi {
             value = ["/cocktails"],
             consumes = ["application/json"]
     )
-    fun saveCocktail(@Parameter(description = "") @Valid @RequestBody(required = false) saveCocktailRequestDTO: SaveCocktailRequestDTO?): ResponseEntity<Unit> {
+    fun saveCocktail(@Parameter(description = "", `in` = ParameterIn.HEADER) @RequestHeader(value = "requestId", required = false) requestId: kotlin.String?,@Parameter(description = "") @Valid @RequestBody(required = false) saveCocktailRequestDTO: SaveCocktailRequestDTO?): ResponseEntity<Unit> {
         return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 }

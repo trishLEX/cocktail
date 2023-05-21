@@ -5,21 +5,18 @@
 */
 package org.openapitools.api
 
-import io.swagger.v3.oas.annotations.Operation
-import io.swagger.v3.oas.annotations.Parameter
-import io.swagger.v3.oas.annotations.media.Content
-import io.swagger.v3.oas.annotations.media.Schema
-import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.*
+import io.swagger.v3.oas.annotations.enums.*
+import io.swagger.v3.oas.annotations.media.*
+import io.swagger.v3.oas.annotations.responses.*
+import io.swagger.v3.oas.annotations.security.*
 import org.openapitools.model.IngredientDTO
 import org.openapitools.model.IngredientLightDTO
 import org.openapitools.model.IngredientNameDTO
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 import javax.validation.constraints.NotNull
 
@@ -40,7 +37,7 @@ interface IngredientApi {
             value = ["/ingredients/{id}"],
             produces = ["application/json"]
     )
-    fun getIngredient(@Parameter(description = "", required = true) @PathVariable("id") id: kotlin.Int): ResponseEntity<IngredientDTO> {
+    fun getIngredient(@Parameter(description = "", required = true) @PathVariable("id") id: kotlin.Int,@Parameter(description = "", `in` = ParameterIn.HEADER) @RequestHeader(value = "requestId", required = false) requestId: kotlin.String?): ResponseEntity<IngredientDTO> {
         return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 
@@ -57,7 +54,7 @@ interface IngredientApi {
             value = ["/ingredients/names/{name}"],
             produces = ["application/json"]
     )
-    fun getIngredientNames(@Parameter(description = "", required = true) @PathVariable("name") name: kotlin.String): ResponseEntity<List<IngredientNameDTO>> {
+    fun getIngredientNames(@Parameter(description = "", required = true) @PathVariable("name") name: kotlin.String,@Parameter(description = "", `in` = ParameterIn.HEADER) @RequestHeader(value = "requestId", required = false) requestId: kotlin.String?): ResponseEntity<List<IngredientNameDTO>> {
         return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 
@@ -74,7 +71,7 @@ interface IngredientApi {
             value = ["/ingredients/types"],
             produces = ["application/json"]
     )
-    fun getIngredientTypes(): ResponseEntity<List<IngredientLightDTO>> {
+    fun getIngredientTypes(@Parameter(description = "", `in` = ParameterIn.HEADER) @RequestHeader(value = "requestId", required = false) requestId: kotlin.String?): ResponseEntity<List<IngredientLightDTO>> {
         return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 
@@ -91,7 +88,7 @@ interface IngredientApi {
             value = ["/ingredients"],
             produces = ["application/json"]
     )
-    fun getIngredients(@NotNull @Parameter(description = "", required = true) @Valid @RequestParam(value = "name", required = true) name: kotlin.String,@Parameter(description = "") @Valid @RequestParam(value = "start", required = false) start: kotlin.Int?,@Parameter(description = "") @Valid @RequestParam(value = "limit", required = false) limit: kotlin.Int?): ResponseEntity<List<IngredientLightDTO>> {
+    fun getIngredients(@NotNull @Parameter(description = "", required = true) @Valid @RequestParam(value = "name", required = true) name: kotlin.String,@Parameter(description = "") @Valid @RequestParam(value = "start", required = false) start: kotlin.Int?,@Parameter(description = "") @Valid @RequestParam(value = "limit", required = false) limit: kotlin.Int?,@Parameter(description = "", `in` = ParameterIn.HEADER) @RequestHeader(value = "requestId", required = false) requestId: kotlin.String?): ResponseEntity<List<IngredientLightDTO>> {
         return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 
@@ -108,7 +105,7 @@ interface IngredientApi {
             value = ["/ingredients-by-id"],
             produces = ["application/json"]
     )
-    fun getIngredientsByIds(@NotNull @Parameter(description = "", required = true) @Valid @RequestParam(value = "ids", required = true) ids: kotlin.collections.List<kotlin.Int>): ResponseEntity<List<IngredientLightDTO>> {
+    fun getIngredientsByIds(@NotNull @Parameter(description = "", required = true) @Valid @RequestParam(value = "ids", required = true) ids: kotlin.collections.List<kotlin.Int>,@Parameter(description = "", `in` = ParameterIn.HEADER) @RequestHeader(value = "requestId", required = false) requestId: kotlin.String?): ResponseEntity<List<IngredientLightDTO>> {
         return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
     }
 }

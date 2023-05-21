@@ -23,6 +23,8 @@ class DbConfig {
         hikariConfig.jdbcUrl = url
         hikariConfig.username = user
         hikariConfig.password = password
+        hikariConfig.maximumPoolSize = 30
+        hikariConfig.minimumIdle = 30
         return HikariDataSource(hikariConfig)
     }
 

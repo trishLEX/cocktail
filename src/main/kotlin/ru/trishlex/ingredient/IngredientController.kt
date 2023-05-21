@@ -10,23 +10,23 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class IngredientController(private val ingredientService: IngredientService): IngredientApi {
 
-    override fun getIngredientNames(name: String): ResponseEntity<List<IngredientNameDTO>> {
+    override fun getIngredientNames(name: String, requestId: String?): ResponseEntity<List<IngredientNameDTO>> {
         return ResponseEntity.ok(ingredientService.getIngredientNames(name).map { it.toDto() })
     }
 
-    override fun getIngredient(id: Int): ResponseEntity<IngredientDTO> {
+    override fun getIngredient(id: Int, requestId: String?): ResponseEntity<IngredientDTO> {
         return ResponseEntity.ok(ingredientService.getIngredient(id).toDto())
     }
 
-    override fun getIngredients(name: String, start: Int?, limit: Int?): ResponseEntity<List<IngredientLightDTO>> {
+    override fun getIngredients(name: String, start: Int?, limit: Int?, requestId: String?): ResponseEntity<List<IngredientLightDTO>> {
         return ResponseEntity.ok(ingredientService.getIngredients(name, start, limit).map { it.toDto() })
     }
 
-    override fun getIngredientsByIds(ids: List<Int>): ResponseEntity<List<IngredientLightDTO>> {
+    override fun getIngredientsByIds(ids: List<Int>, requestId: String?): ResponseEntity<List<IngredientLightDTO>> {
         return ResponseEntity.ok(ingredientService.getIngredients(ids).map { it.toDto() })
     }
 
-    override fun getIngredientTypes(): ResponseEntity<List<IngredientLightDTO>> {
+    override fun getIngredientTypes(requestId: String?): ResponseEntity<List<IngredientLightDTO>> {
         return ResponseEntity.ok(ingredientService.getSearchIngredients().map { it.toDto() })
     }
 }

@@ -17,3 +17,7 @@ db.url: jdbc:postgresql://rc1a-kgq9674tw9rnfx96.mdb.yandexcloud.net:6432/cocktai
 db.username: trishlex
 db.password: ""
 db.driver: org.postgresql.Driver
+
+logging:
+  level:
+    org.springframework.jdbc.core: TRACE

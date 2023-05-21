@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class ToolController(private val toolService: ToolService): ToolApi {
 
-    override fun getTools(): ResponseEntity<List<ToolLightDTO>> {
+    override fun getTools(requestId: String?): ResponseEntity<List<ToolLightDTO>> {
         return ResponseEntity.ok(toolService.getTools().map { it.toDto() })
     }
 }

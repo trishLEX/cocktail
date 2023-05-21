@@ -7,11 +7,13 @@ import org.springframework.stereotype.Repository
 import ru.trishlex.cocktail.model.*
 import ru.trishlex.ingredient.model.IngredientType
 import ru.trishlex.util.ArraySql
+import ru.trishlex.util.injectedLogger
 import java.sql.JDBCType
 
 @Repository
 class CocktailDao(private val namedJdbcTemplate: NamedParameterJdbcTemplate) {
 
+    private val log by injectedLogger()
     companion object {
         private const val LIMIT = 10
         private const val GET_COCKTAIL_NAMES = "" +
